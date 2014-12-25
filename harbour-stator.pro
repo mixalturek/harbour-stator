@@ -19,9 +19,14 @@
 
 TARGET = harbour-stator
 
-CONFIG += sailfishapp
+CONFIG += sailfishapp positioning
+LIBS += -lQt5Positioning
 
-SOURCES += src/harbour-stator.cpp
+SOURCES += src/harbour-stator.cpp \
+    src/locationreader.cpp
+
+HEADERS += \
+    src/locationreader.h
 
 OTHER_FILES += qml/harbour-stator.qml \
     qml/cover/CoverPage.qml \

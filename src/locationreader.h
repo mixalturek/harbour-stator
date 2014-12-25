@@ -17,25 +17,33 @@
  * along with Stator.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef QT_QML_DEBUG
-#include <QtQuick>
-#endif
+#ifndef LOCATIONREADER_H
+#define LOCATIONREADER_H
 
-#include <sailfishapp.h>
-#include "locationreader.h"
+#include <QObject>
+#include <QtPositioning/QGeoPositionInfoSource>
+#include <QtPositioning/QGeoPositionInfo>
 
-
-int main(int argc, char *argv[])
+class LocationReader : public QObject
 {
-    QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
-    app->setApplicationName("stator");
+    Q_OBJECT
 
-    QScopedPointer<QQuickView> view(SailfishApp::createView());
-    view->setSource(SailfishApp::pathTo("qml/harbour-stator.qml"));
-    view->showFullScreen();
+public:
+    explicit LocationReader(QObject *parent = 0);
+    virtual ~LocationReader();
 
-    // TODO: remove
-    QScopedPointer<LocationReader> loc(new LocationReader());
+signals:
+    // void positionChanged();
 
-    return app->exec();
-}
+public slots:
+//    void startUpdates();
+//    void stopUpdates();
+    void error(QGeoPositionInfoSource::Error positioningError);
+    void updateTimeout();
+    void positionUpdated(const QGeoPositionInfo &info);
+
+private:
+
+};
+
+#endif // LOCATIONREADER_H
