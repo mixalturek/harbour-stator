@@ -38,7 +38,12 @@ OTHER_FILES += qml/harbour-stator.qml \
     qml/components/HeaderAndText.qml \
     qml/pages/MainPage.qml \
     rpm/harbour-stator.changes \
-    translations/harbour-stator-cs_CZ.ts
+    translations/harbour-stator-cs_CZ.ts \
+    qml/images/sports/bike.svg \
+    qml/images/sports/run.svg \
+    qml/images/sports/skate.svg \
+    qml/images/sports/walk.svg \
+    qml/components/ImageAndText.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

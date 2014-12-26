@@ -17,25 +17,29 @@
  * along with Stator.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef QT_QML_DEBUG
-#include <QtQuick>
-#endif
+import QtQuick 2.0
+import Sailfish.Silica 1.0
 
-#include <sailfishapp.h>
-#include "locationreader.h"
+Rectangle {
+    property alias imageSource: image.source
+    property alias text: text.text
 
+    width: image.width;
+    height: image.height + text.height
+    color: "transparent"
 
-int main(int argc, char *argv[])
-{
-    QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
-    app->setApplicationName("stator");
+    Image {
+        id: image
+        width: Theme.iconSizeLarge
+        height: Theme.iconSizeLarge
+    }
 
-    QScopedPointer<QQuickView> view(SailfishApp::createView());
-    view->setSource(SailfishApp::pathTo("qml/harbour-stator.qml"));
-    view->showFullScreen();
-
-    // TODO: remove
-    // QScopedPointer<LocationReader> loc(new LocationReader());
-
-    return app->exec();
+    Label {
+        id: text
+        font.pixelSize: Theme.fontSizeExtraSmall
+        color: Theme.primaryColor
+        anchors.top: image.bottom
+        width: parent.width
+        horizontalAlignment: Text.AlignHCenter
+    }
 }

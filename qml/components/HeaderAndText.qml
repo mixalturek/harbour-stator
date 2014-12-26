@@ -35,8 +35,6 @@ Column {
     Label {
         id: header
         width: parent.width
-        // TODO:
-        // font.pixelSize: Theme.fontSizeExtraSmall
         font: Theme.fontFamilyHeading
         color: Theme.highlightColor
     }

@@ -20,6 +20,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 //import QtPositioning 5.0
+import "../components"
 
 Page {
     id: page
@@ -46,6 +47,12 @@ Page {
                 title: qsTr("Stator")
             }
 
+            anchors {
+                right: parent.right
+                left: parent.left
+                margins: Theme.paddingLarge
+            }
+
             Label {
                 // TODO:
                 x: Theme.paddingLarge
@@ -53,6 +60,51 @@ Page {
                 color: Theme.secondaryHighlightColor
                 font.pixelSize: Theme.fontSizeExtraLarge
             }
+
+            Flow {
+                width: parent.width
+                spacing: Theme.paddingLarge
+
+                ImageAndText {
+                    imageSource: "../images/sports/walk.svg"
+                    text: qsTr("Walk")
+                }
+
+                ImageAndText {
+                    imageSource: "../images/sports/run.svg"
+                    text: qsTr("Run")
+                }
+
+                ImageAndText {
+                    imageSource: "../images/sports/skate.svg"
+                    text: qsTr("Skate")
+                }
+
+                ImageAndText {
+                    imageSource: "../images/sports/bike.svg"
+                    text: qsTr("Bike")
+                }
+
+                ImageAndText {
+                    imageSource: "../images/sports/walk.svg"
+                    text: qsTr("Walk")
+                }
+
+                ImageAndText {
+                    imageSource: "../images/sports/run.svg"
+                    text: qsTr("Run")
+                }
+
+                ImageAndText {
+                    imageSource: "../images/sports/skate.svg"
+                    text: qsTr("Skate")
+                }
+
+                ImageAndText {
+                    imageSource: "../images/sports/bike.svg"
+                    text: qsTr("Bike")
+                }
+             }
         }
 
 //        Component.onCompleted: positionSource.start()

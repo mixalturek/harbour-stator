@@ -57,5 +57,21 @@
         <source>TODO</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Walk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Run</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bike</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skate</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
