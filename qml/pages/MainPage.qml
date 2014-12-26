@@ -56,42 +56,42 @@ Page {
                 width: parent.width
                 spacing: Theme.paddingLarge
 
-                ImageAndText {
+                SportIcon {
                     imageSource: "../images/sports/walk.svg"
                     text: qsTr("Walk")
                 }
 
-                ImageAndText {
+                SportIcon {
                     imageSource: "../images/sports/run.svg"
                     text: qsTr("Run")
                 }
 
-                ImageAndText {
+                SportIcon {
                     imageSource: "../images/sports/skate.svg"
                     text: qsTr("Skate")
                 }
 
-                ImageAndText {
+                SportIcon {
                     imageSource: "../images/sports/bike.svg"
                     text: qsTr("Bike")
                 }
 
-                ImageAndText {
+                SportIcon {
                     imageSource: "../images/sports/walk.svg"
                     text: qsTr("Walk")
                 }
 
-                ImageAndText {
+                SportIcon {
                     imageSource: "../images/sports/run.svg"
                     text: qsTr("Run")
                 }
 
-                ImageAndText {
+                SportIcon {
                     imageSource: "../images/sports/skate.svg"
                     text: qsTr("Skate")
                 }
 
-                ImageAndText {
+                SportIcon {
                     imageSource: "../images/sports/bike.svg"
                     text: qsTr("Bike")
                 }
