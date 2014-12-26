@@ -24,6 +24,7 @@ import "../components"
 
 Page {
     id: page
+    allowedOrientations: Orientation.All
 
     SilicaFlickable {
         anchors.fill: parent
@@ -39,9 +40,7 @@ Page {
 
         Column {
             id: column
-
             width: page.width
-            spacing: Theme.paddingLarge
 
             PageHeader {
                 title: qsTr("Stator")
@@ -50,7 +49,6 @@ Page {
             anchors {
                 right: parent.right
                 left: parent.left
-                margins: Theme.paddingLarge
             }
 
             Label {
