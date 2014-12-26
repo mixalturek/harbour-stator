@@ -20,27 +20,36 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-BackgroundItem {
-    property alias imageSource: image.source
-    property alias text: label.text
+Page {
+    id: page
+    allowedOrientations: Orientation.All
 
-    width: image.width;
-    height: image.height + label.height
+    property string sport: ""
 
-    onClicked: pageStack.push(Qt.resolvedUrl("../pages/SportPage.qml"), {sport: label.text})
+    SilicaFlickable {
+        anchors.fill: parent
+        contentHeight: column.height
 
-    Image {
-        id: image
-        width: Theme.iconSizeLarge
-        height: Theme.iconSizeLarge
-    }
+        Column {
+            id: column
+            width: page.width
 
-    Label {
-        id: label
-        font.pixelSize: Theme.fontSizeExtraSmall
-        color: highlighted ? Theme.highlightColor : Theme.primaryColor
-        anchors.top: image.bottom
-        width: parent.width
-        horizontalAlignment: Text.AlignHCenter
+            PageHeader {
+                title: sport
+            }
+
+            anchors {
+                right: parent.right
+                left: parent.left
+            }
+
+            Label {
+                // TODO:
+                x: Theme.paddingLarge
+                text: qsTr("TODO")
+                color: Theme.secondaryHighlightColor
+                font.pixelSize: Theme.fontSizeExtraLarge
+            }
+        }
     }
 }

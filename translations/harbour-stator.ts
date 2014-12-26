@@ -54,10 +54,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TODO</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Walk</source>
         <translation type="unfinished"></translation>
     </message>
@@ -71,6 +67,17 @@
     </message>
     <message>
         <source>Skate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sport Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SportPage</name>
+    <message>
+        <source>TODO</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

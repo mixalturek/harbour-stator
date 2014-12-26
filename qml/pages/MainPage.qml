@@ -44,19 +44,12 @@ Page {
 
             PageHeader {
                 title: qsTr("Stator")
+                description: qsTr("Sport Tracker")
             }
 
             anchors {
                 right: parent.right
                 left: parent.left
-            }
-
-            Label {
-                // TODO:
-                x: Theme.paddingLarge
-                text: qsTr("TODO")
-                color: Theme.secondaryHighlightColor
-                font.pixelSize: Theme.fontSizeExtraLarge
             }
 
             Flow {
