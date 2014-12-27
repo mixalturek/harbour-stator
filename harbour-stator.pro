@@ -45,7 +45,8 @@ OTHER_FILES += qml/harbour-stator.qml \
     qml/images/sports/walk.svg \
     qml/pages/SportPage.qml \
     README.md \
-    qml/components/SportIcon.qml
+    qml/components/SportIcon.qml \
+    qml/components/KeyValue.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

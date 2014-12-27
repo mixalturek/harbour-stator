@@ -73,11 +73,47 @@
         <source>Sport Tracker</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Activate GPS Receiver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find location as soon as possible.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SportPage</name>
     <message>
-        <source>TODO</source>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Average Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Altitude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>km</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>km/h</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
