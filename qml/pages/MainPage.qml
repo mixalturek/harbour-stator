@@ -52,6 +52,16 @@ Page {
                 left: parent.left
             }
 
+            TextSwitch {
+                id: gpsSwitch
+                text: qsTr("Activate GPS Receiver")
+                description: qsTr("Find location as soon as possible.")
+                onCheckedChanged: {
+                    // TODO: implementation
+                    console.log("Activate GPS: " + checked)
+                }
+            }
+
             Flow {
                 width: parent.width
                 spacing: Theme.paddingLarge
