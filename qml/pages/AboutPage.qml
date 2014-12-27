@@ -62,6 +62,7 @@ and monitor your performance.")
             }
 
             BackgroundItem {
+                id: license
                 contentHeight: licenseSection.height
                 height: contentHeight
 
@@ -69,6 +70,7 @@ and monitor your performance.")
                     id: licenseSection
                     header: qsTr("License")
                     text: qsTr("GNU GPL version 3")
+                    textColor: license.highlighted ? Theme.highlightColor : Theme.primaryColor
                 }
 
                 onClicked: {
@@ -77,6 +79,7 @@ and monitor your performance.")
             }
 
             BackgroundItem {
+                id: sourceCode
                 contentHeight: sourceCodeSection.height
                 height: contentHeight
 
@@ -84,6 +87,7 @@ and monitor your performance.")
                     id: sourceCodeSection
                     header: qsTr("Source Code")
                     text: "https://github.com/mixalturek/harbour-stator/"
+                    textColor: sourceCode.highlighted ? Theme.highlightColor : Theme.primaryColor
                 }
 
                 onClicked: {

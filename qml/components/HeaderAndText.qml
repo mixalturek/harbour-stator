@@ -23,6 +23,7 @@ import Sailfish.Silica 1.0
 Column {
     property alias header: header.text
     property alias text: text.text
+    property string textColor: Theme.primaryColor
 
     spacing: Theme.paddingSmall
 
@@ -43,7 +44,7 @@ Column {
         id: text
         width: parent.width - (2 * Theme.paddingLarge)
         font.pixelSize: Theme.fontSizeSmall
-        color: Theme.primaryColor
+        color: textColor
         wrapMode: Text.Wrap
     }
 }
