@@ -30,12 +30,24 @@ Column {
         left: parent.left
     }
 
-    Label {
-        id: valueLabel
-        width: parent.width
-        font.pixelSize: Theme.fontSizeHuge
-        color: Theme.primaryColor
-        text: value + " " + unit
+    Row {
+        spacing: Theme.paddingMedium
+
+        Label {
+            id: valueLabel
+            font.pixelSize: Theme.fontSizeHuge
+            font.weight: Font.Bold
+            color: Theme.primaryColor
+            text: value
+        }
+
+        Label {
+            id: unitLabel
+            anchors.baseline: valueLabel.baseline
+            font.pixelSize: Theme.fontSizeMedium
+            color: Theme.primaryColor
+            text: unit
+        }
     }
 
     Separator {
