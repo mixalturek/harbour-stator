@@ -68,44 +68,44 @@ Page {
 
                 SportIcon {
                     imageSource: "../images/sports/walk.svg"
-                    text: qsTr("Walk")
+                    text: qsTr("Walking")
                 }
 
                 SportIcon {
                     imageSource: "../images/sports/run.svg"
-                    text: qsTr("Run")
+                    text: qsTr("Running")
                 }
 
                 SportIcon {
                     imageSource: "../images/sports/skate.svg"
-                    text: qsTr("Skate")
+                    text: qsTr("Skating")
                 }
 
                 SportIcon {
                     imageSource: "../images/sports/bike.svg"
-                    text: qsTr("Bike")
+                    text: qsTr("Biking")
                 }
 
                 SportIcon {
                     imageSource: "../images/sports/walk.svg"
-                    text: qsTr("Walk")
+                    text: qsTr("Walking")
                 }
 
                 SportIcon {
                     imageSource: "../images/sports/run.svg"
-                    text: qsTr("Run")
+                    text: qsTr("Running")
                 }
 
                 SportIcon {
                     imageSource: "../images/sports/skate.svg"
-                    text: qsTr("Skate")
+                    text: qsTr("Skating")
                 }
 
                 SportIcon {
                     imageSource: "../images/sports/bike.svg"
-                    text: qsTr("Bike")
+                    text: qsTr("Biking")
                 }
-             }
+            }
         }
 
 //        Component.onCompleted: positionSource.start()

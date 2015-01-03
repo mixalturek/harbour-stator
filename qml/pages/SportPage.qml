@@ -26,11 +26,19 @@ Page {
     // allowedOrientations: Orientation.All
 
     property string sport: ""
+    property bool paused: true
 
     SilicaFlickable {
         id: flickable
         anchors.fill: parent
         contentHeight: column.height
+
+        PullDownMenu {
+            MenuItem {
+                text: paused ? qsTr("Activate") : qsTr("Pause")
+                onClicked: paused = !paused
+            }
+        }
 
         Column {
             id: column
@@ -45,39 +53,40 @@ Page {
 
             PageHeader {
                 title: sport
+                description: paused ? qsTr("Paused") : qsTr("Active")
             }
 
             KeyValue {
                 id: duration
                 key: qsTr("Duration")
-                value: "00:42:42"
+                value: "00:00:00"
             }
 
             KeyValue {
                 id: distance
                 key: qsTr("Distance")
-                value: "14.23"
+                value: "0"
                 unit: qsTr("km")
             }
 
             KeyValue {
                 id: altitude
                 key: qsTr("Altitude")
-                value: "↑ 200, ↓ 42"
+                value: "↑ 0, ↓ 0"
                 unit: qsTr("m")
             }
 
             KeyValue {
                 id: currentSpeed
                 key: qsTr("Current Speed")
-                value: "2.3"
+                value: "0"
                 unit: qsTr("km/h")
             }
 
             KeyValue {
                 id: averageSpeed
                 key: qsTr("Average Speed")
-                value: "2.1"
+                value: "0"
                 unit: qsTr("km/h")
             }
         }

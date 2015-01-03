@@ -54,22 +54,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Walk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Run</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bike</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Skate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sport Tracker</source>
         <translation type="unfinished"></translation>
     </message>
@@ -79,6 +63,29 @@
     </message>
     <message>
         <source>Find location as soon as possible.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Walking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Biking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Running</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ResultsPage</name>
+    <message>
+        <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -114,6 +121,22 @@
     </message>
     <message>
         <source>km/h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paused</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activate</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
