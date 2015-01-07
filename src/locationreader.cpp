@@ -17,30 +17,22 @@
  * along with Stator.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
 #include <QtPositioning/QGeoPositionInfoSource>
 #include <QtPositioning/QGeoPositionInfo>
 #include <QtPositioning/QGeoCoordinate>
-
-#include <QFile>
-#include <QStringList>
-#include <QTextStream>
-#include <QIODevice>
 
 #include "locationreader.h"
 
 LocationReader::LocationReader(QObject *parent) :
     QObject(parent)
 {
-    QFile file("/home/nemo/stator.log");
-    file.open(QIODevice::Append | QIODevice::Text);
-    QTextStream out(&file);
-
     QGeoPositionInfoSource* source = QGeoPositionInfoSource::createDefaultSource(this);
 
     if(source != NULL) {
-        out << "starting updates" << endl;
+        qDebug() << "Starting location updates";
         source->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
-        source->setUpdateInterval(5000);
+        // source->setUpdateInterval(5000);
 
         connect(source, SIGNAL(error(QGeoPositionInfoSource::Error)),
                 this, SLOT(error(QGeoPositionInfoSource::Error)));
@@ -51,78 +43,46 @@ LocationReader::LocationReader(QObject *parent) :
 
         source->startUpdates();
     } else {
-        out << "impossible to start updates" << endl;
+        qWarning() << "Starting of location updates failed";
     }
-
-    file.close();
 }
 
 LocationReader::~LocationReader()
 {
-    QFile file("/home/nemo/stator.log");
-    file.open(QIODevice::Append | QIODevice::Text);
-    QTextStream out(&file);
-
-    out << "Destructor" << endl;
-
-    file.close();
+    qDebug() << "Location reader destructor";
 }
 
 void LocationReader::updateTimeout()
 {
-    QFile file("/home/nemo/stator.log");
-    file.open(QIODevice::Append | QIODevice::Text);
-    QTextStream out(&file);
-
-    out << "Update timeout" << endl;
-
-    file.close();
+    qWarning() << "Location update timed out";
 }
 
 void LocationReader::error(QGeoPositionInfoSource::Error positioningError)
 {
-    QFile file("/home/nemo/stator.log");
-    file.open(QIODevice::Append | QIODevice::Text);
-    QTextStream out(&file);
-
-    out << "Error:" << positioningError << endl;
-
-    file.close();
+    qWarning() << "Error:" << positioningError;
 }
 
 void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 {
-    QFile file("/home/nemo/stator.log");
-    file.open(QIODevice::Append | QIODevice::Text);
-    QTextStream out(&file);
-
-    out << "Timestamp: " << info.timestamp().toString() << endl;
+    qDebug() << "Timestamp:" << info.timestamp();
 
     QGeoCoordinate coordinate = info.coordinate();
-    out << "QGeoCoordinate:" << coordinate.toString() << endl;
-    out << "Altitude: " << coordinate.altitude() << endl;
-    out << "Latitude: " << coordinate.latitude() << endl;
-    out << "Longitude: " << coordinate.longitude() << endl;
+    qDebug() << "QGeoCoordinate:" << coordinate;
+    qDebug() << "Latitude:" << coordinate.latitude();
+    qDebug() << "Longitude:" << coordinate.longitude();
+    qDebug() << "Altitude:" << coordinate.altitude();
 
-    out << "Direction: " << (info.hasAttribute(QGeoPositionInfo::Direction)
-                           ? QString::number(info.attribute(QGeoPositionInfo::Direction))
-                           : "undefined") << endl;
-    out << "GroundSpeed: " << (info.hasAttribute(QGeoPositionInfo::GroundSpeed)
-                             ? QString::number(info.attribute(QGeoPositionInfo::GroundSpeed))
-                             : "undefined")<< endl;
-    out << "VerticalSpeed: " << (info.hasAttribute(QGeoPositionInfo::VerticalSpeed)
-                               ? QString::number(info.attribute(QGeoPositionInfo::VerticalSpeed))
-                               : "undefined")<< endl;
-    out << "MagneticVariation: " << (info.hasAttribute(QGeoPositionInfo::MagneticVariation)
-                                   ? QString::number(info.attribute(QGeoPositionInfo::MagneticVariation))
-                                   : "undefined")<< endl;
-    out << "HorizontalAccuracy: " << (info.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)
-                                    ? QString::number(info.attribute(QGeoPositionInfo::HorizontalAccuracy))
-                                    : "undefined")<< endl;
-    out << "VerticalAccuracy: " << (info.hasAttribute(QGeoPositionInfo::VerticalAccuracy)
-                                  ? QString::number(info.attribute(QGeoPositionInfo::VerticalAccuracy))
-                                  : "undefined")<< endl;
-    out << "----" << endl;
-
-    file.close();
+    qDebug() << "Direction:" << (info.hasAttribute(QGeoPositionInfo::Direction)
+        ? QString::number(info.attribute(QGeoPositionInfo::Direction)) : "undefined");
+    qDebug() << "GroundSpeed:" << (info.hasAttribute(QGeoPositionInfo::GroundSpeed)
+        ? QString::number(info.attribute(QGeoPositionInfo::GroundSpeed)) : "undefined");
+    qDebug() << "VerticalSpeed:" << (info.hasAttribute(QGeoPositionInfo::VerticalSpeed)
+        ? QString::number(info.attribute(QGeoPositionInfo::VerticalSpeed)) : "undefined");
+    qDebug() << "MagneticVariation:" << (info.hasAttribute(QGeoPositionInfo::MagneticVariation)
+        ? QString::number(info.attribute(QGeoPositionInfo::MagneticVariation)) : "undefined");
+    qDebug() << "HorizontalAccuracy:" << (info.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)
+        ? QString::number(info.attribute(QGeoPositionInfo::HorizontalAccuracy)) : "undefined");
+    qDebug() << "VerticalAccuracy:" << (info.hasAttribute(QGeoPositionInfo::VerticalAccuracy)
+        ? QString::number(info.attribute(QGeoPositionInfo::VerticalAccuracy)): "undefined");
+    qDebug() << "----";
 }

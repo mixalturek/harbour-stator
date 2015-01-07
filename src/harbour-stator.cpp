@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     view->showFullScreen();
 
     // TODO: remove
-    // QScopedPointer<LocationReader> loc(new LocationReader());
+    QScopedPointer<LocationReader> loc(new LocationReader());
 
     return app->exec();
 }
