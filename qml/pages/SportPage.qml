@@ -19,6 +19,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import harbour.stator.LocationReader 1.0
 import "../components"
 
 Page {
@@ -35,8 +36,11 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: paused ? qsTr("Activate") : qsTr("Pause")
-                onClicked: paused = !paused
+                text: paused ? qsTr("Go") : qsTr("Pause")
+                onClicked: {
+                    paused = !paused
+                    locationReader.enableUpdates(!paused)
+                }
             }
         }
 
@@ -92,5 +96,9 @@ Page {
         }
 
         VerticalScrollDecorator { flickable: flickable }
+    }
+
+    LocationReader {
+        id: locationReader
     }
 }

@@ -136,7 +136,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Activate</source>
+        <source>Go</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

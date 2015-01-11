@@ -30,12 +30,11 @@ int main(int argc, char *argv[])
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
     app->setApplicationName("stator");
 
+    qmlRegisterType<LocationReader>("harbour.stator.LocationReader", 1, 0, "LocationReader");
+
     QScopedPointer<QQuickView> view(SailfishApp::createView());
     view->setSource(SailfishApp::pathTo("qml/harbour-stator.qml"));
     view->showFullScreen();
-
-    // TODO: remove
-    QScopedPointer<LocationReader> loc(new LocationReader());
 
     return app->exec();
 }

@@ -36,14 +36,15 @@ signals:
     // void positionChanged();
 
 public slots:
-//    void startUpdates();
-//    void stopUpdates();
+    void enableUpdates(bool enable);
+
+private slots:
     void error(QGeoPositionInfoSource::Error positioningError);
     void updateTimeout();
     void positionUpdated(const QGeoPositionInfo &info);
 
 private:
-
+    QGeoPositionInfoSource* positionSource;
 };
 
 #endif // LOCATIONREADER_H
