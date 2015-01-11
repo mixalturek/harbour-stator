@@ -26,7 +26,10 @@
 
 LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
-    positionSource(QGeoPositionInfoSource::createDefaultSource(this))
+    positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
+    state(STATE_BEGINNING),
+    duration(0),
+    lastTimestamp(0)
 {
     if(positionSource != NULL) {
         positionSource->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
@@ -70,6 +73,7 @@ void LocationReader::enableUpdates(bool enable)
 
     if(enable) {
         qDebug() << "Enabling location updates";
+        state = STATE_BEGINNING;
         positionSource->startUpdates();
     } else {
         qDebug() << "Disabling location updates";
@@ -80,11 +84,13 @@ void LocationReader::enableUpdates(bool enable)
 void LocationReader::updateTimeout()
 {
     qWarning() << "Position update timeout";
+    // TODO: notification to the user
 }
 
 void LocationReader::error(QGeoPositionInfoSource::Error positioningError)
 {
     qWarning() << "Position error:" << positioningError;
+    // TODO: notification to the user
 }
 
 void LocationReader::positionUpdated(const QGeoPositionInfo &info)
@@ -112,4 +118,19 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     qDebug() << "VerticalAccuracy:" << (info.hasAttribute(QGeoPositionInfo::VerticalAccuracy)
         ? QString::number(info.attribute(QGeoPositionInfo::VerticalAccuracy)): "undefined");
     qDebug() << "----";
+
+    if(state == STATE_BEGINNING) {
+        state = STATE_FIRST_EVENT;
+        return;
+    }
+
+    qint64 timestamp = info.timestamp().toMSecsSinceEpoch();
+
+    if(state == STATE_MULTIPLE_EVENTS) {
+        duration += timestamp - lastTimestamp;
+        emit durationUpdated(duration);
+    }
+
+    state = STATE_MULTIPLE_EVENTS;
+    lastTimestamp = timestamp;
 }

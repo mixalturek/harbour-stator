@@ -100,5 +100,20 @@ Page {
 
     LocationReader {
         id: locationReader
+        onDurationUpdated: duration.value = formatDuration(millis)
+    }
+
+    function formatDuration(millis) {
+        var hours = Math.floor(millis / 3600000);
+        var hoursRemainder = millis % 3600000;
+        var minutes = Math.floor(hoursRemainder / 60000);
+        var minutesRemainder = hoursRemainder % 60000;
+        var seconds = Math.floor(minutesRemainder / 1000);
+
+        hours = (hours < 10) ? '0' + hours : hours;
+        minutes = (minutes < 10) ? '0' + minutes : minutes;
+        seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+        return hours + ":" + minutes + ":" + seconds
     }
 }

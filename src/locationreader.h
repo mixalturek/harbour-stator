@@ -23,19 +23,39 @@
 #include <QObject>
 #include <QtPositioning/QGeoPositionInfoSource>
 #include <QtPositioning/QGeoPositionInfo>
+#include "locationreaderstate.h"
 
+/**
+ * @brief Reader of GEO position.
+ */
 class LocationReader : public QObject
 {
     Q_OBJECT
 
 public:
+    /**
+     * @brief Constructor.
+     * @param parent optional parent owner
+     */
     explicit LocationReader(QObject *parent = 0);
+
+    /**
+     * @brief Destructor.
+     */
     virtual ~LocationReader();
 
 signals:
-    // void positionChanged();
+    /**
+     * @brief Duration of sport activity was changed.
+     * @param millis new duration in milliseconds
+     */
+    void durationUpdated(qint64 millis);
 
 public slots:
+    /**
+     * @brief Enable or disable position updates.
+     * @param enable true enable, false disable
+     */
     void enableUpdates(bool enable);
 
 private slots:
@@ -44,7 +64,25 @@ private slots:
     void positionUpdated(const QGeoPositionInfo &info);
 
 private:
+    /**
+     * @brief Source of GEO position information, may be NULL on error.
+     */
     QGeoPositionInfoSource* positionSource;
+
+    /**
+     * @brief State of location reader to prevent computations on invalid data.
+     */
+    LocationReaderState state;
+
+    /**
+     * @brief Total duration of sport activity.
+     */
+    qint64 duration;
+
+    /**
+     * @brief Timestamp of last valid position event, in milliseconds.
+     */
+    qint64 lastTimestamp;
 };
 
 #endif // LOCATIONREADER_H

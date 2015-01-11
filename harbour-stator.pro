@@ -26,7 +26,8 @@ SOURCES += src/harbour-stator.cpp \
     src/locationreader.cpp
 
 HEADERS += \
-    src/locationreader.h
+    src/locationreader.h \
+    src/locationreaderstate.h
 
 OTHER_FILES += qml/harbour-stator.qml \
     qml/cover/CoverPage.qml \
