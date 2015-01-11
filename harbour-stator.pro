@@ -39,17 +39,20 @@ OTHER_FILES += qml/harbour-stator.qml \
     qml/pages/MainPage.qml \
     rpm/harbour-stator.changes \
     translations/harbour-stator-cs_CZ.ts \
-    qml/images/sports/bike.svg \
-    qml/images/sports/run.svg \
-    qml/images/sports/skate.svg \
-    qml/images/sports/walk.svg \
     qml/pages/SportPage.qml \
     README.md \
     qml/components/SportIcon.qml \
     qml/components/KeyValue.qml \
-    qml/pages/ResultsPage.qml
+    qml/pages/ResultsPage.qml \
+    resources/bike.svg \
+    resources/run.svg \
+    resources/skate.svg \
+    resources/walk.svg
 
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/harbour-stator-cs_CZ.ts
+
+RESOURCES += \
+    resources/resources.qrc

@@ -67,42 +67,42 @@ Page {
                 spacing: Theme.paddingLarge
 
                 SportIcon {
-                    imageSource: "../images/sports/walk.svg"
+                    imageSource: "qrc:/images/sports/walk.svg"
                     text: qsTr("Walking")
                 }
 
                 SportIcon {
-                    imageSource: "../images/sports/run.svg"
+                    imageSource: "qrc:/images/sports/run.svg"
                     text: qsTr("Running")
                 }
 
                 SportIcon {
-                    imageSource: "../images/sports/skate.svg"
+                    imageSource: "qrc:/images/sports/skate.svg"
                     text: qsTr("Skating")
                 }
 
                 SportIcon {
-                    imageSource: "../images/sports/bike.svg"
+                    imageSource: "qrc:/images/sports/bike.svg"
                     text: qsTr("Biking")
                 }
 
                 SportIcon {
-                    imageSource: "../images/sports/walk.svg"
+                    imageSource: "qrc:/images/sports/walk.svg"
                     text: qsTr("Walking")
                 }
 
                 SportIcon {
-                    imageSource: "../images/sports/run.svg"
+                    imageSource: "qrc:/images/sports/run.svg"
                     text: qsTr("Running")
                 }
 
                 SportIcon {
-                    imageSource: "../images/sports/skate.svg"
+                    imageSource: "qrc:/images/sports/skate.svg"
                     text: qsTr("Skating")
                 }
 
                 SportIcon {
-                    imageSource: "../images/sports/bike.svg"
+                    imageSource: "qrc:/images/sports/bike.svg"
                     text: qsTr("Biking")
                 }
             }
