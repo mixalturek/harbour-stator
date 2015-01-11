@@ -23,7 +23,7 @@ import "../components"
 
 Page {
     id: page
-    // allowedOrientations: Orientation.All
+    allowedOrientations: Orientation.All
 
     property string sport: ""
     property bool paused: true
