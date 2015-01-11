@@ -46,10 +46,16 @@ public:
 
 signals:
     /**
-     * @brief Duration of sport activity was changed.
+     * @brief Duration of sport activity changed.
      * @param millis new duration in milliseconds
      */
     void durationUpdated(qint64 millis);
+
+    /**
+     * @brief Current ground speed changed.
+     * @param metersPerSecond speed in meters per second
+     */
+    void currentSpeedUpdated(qreal metersPerSecond);
 
 public slots:
     /**
@@ -78,6 +84,11 @@ private:
      * @brief Total duration of sport activity.
      */
     qint64 duration;
+
+    /**
+     * @brief Current ground speed in meters per second.
+     */
+    qreal currentSpeed;
 
     /**
      * @brief Timestamp of last valid position event, in milliseconds.

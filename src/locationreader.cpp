@@ -29,6 +29,7 @@ LocationReader::LocationReader(QObject *parent) :
     positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
     state(STATE_BEGINNING),
     duration(0),
+    currentSpeed(0),
     lastTimestamp(0)
 {
     if(positionSource != NULL) {
@@ -129,6 +130,11 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     if(state == STATE_MULTIPLE_EVENTS) {
         duration += timestamp - lastTimestamp;
         emit durationUpdated(duration);
+
+        if(info.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
+            currentSpeed = info.attribute(QGeoPositionInfo::GroundSpeed);
+            emit currentSpeedUpdated(currentSpeed);
+        }
     }
 
     state = STATE_MULTIPLE_EVENTS;

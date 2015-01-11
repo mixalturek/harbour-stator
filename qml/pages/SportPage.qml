@@ -101,6 +101,7 @@ Page {
     LocationReader {
         id: locationReader
         onDurationUpdated: duration.value = formatDuration(millis)
+        onCurrentSpeedUpdated: currentSpeed.value = formatSpeed(metersPerSecond)
     }
 
     function formatDuration(millis) {
@@ -115,5 +116,9 @@ Page {
         seconds = (seconds < 10) ? '0' + seconds : seconds;
 
         return hours + ":" + minutes + ":" + seconds
+    }
+
+    function formatSpeed(metersPerSecond) {
+        return (metersPerSecond * 3.6).toFixed(2)
     }
 }
