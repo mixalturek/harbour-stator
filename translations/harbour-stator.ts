@@ -58,14 +58,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Activate GPS Receiver</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Find location as soon as possible.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Walking</source>
         <translation type="unfinished"></translation>
     </message>

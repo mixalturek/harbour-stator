@@ -64,6 +64,29 @@ LocationReader::~LocationReader()
     }
 }
 
+int LocationReader::updateInterval() const
+{
+    if(positionSource == NULL) {
+        qWarning() << "Position source is NULL while getting update interval";
+        // TODO: notification to the user
+        return 0;
+    }
+
+    return positionSource->updateInterval();
+}
+
+void LocationReader::setUpdateInterval(int millis)
+{
+    if(positionSource == NULL) {
+        qWarning() << "Position source is NULL while setting update interval";
+        // TODO: notification to the user
+        return;
+    }
+
+    qDebug() << "Setting GPS update interval:" << millis << " ms";
+    positionSource->setUpdateInterval(millis);
+}
+
 void LocationReader::enableUpdates(bool enable)
 {
     if(positionSource == NULL) {

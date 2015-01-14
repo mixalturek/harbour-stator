@@ -19,7 +19,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-//import QtPositioning 5.0
 import "../components"
 
 Page {
@@ -52,16 +51,6 @@ Page {
                 left: parent.left
             }
 
-            TextSwitch {
-                id: gpsSwitch
-                text: qsTr("Activate GPS Receiver")
-                description: qsTr("Find location as soon as possible.")
-                onCheckedChanged: {
-                    // TODO: implementation
-                    console.log("Activate GPS: " + checked)
-                }
-            }
-
             Flow {
                 width: parent.width
                 spacing: Theme.paddingLarge
@@ -69,49 +58,27 @@ Page {
                 SportIcon {
                     imageSource: "qrc:/images/sports/walk.svg"
                     text: qsTr("Walking")
+                    updateInterval: 10000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/run.svg"
                     text: qsTr("Running")
+                    updateInterval: 5000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/skate.svg"
                     text: qsTr("Skating")
+                    updateInterval: 2000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/bike.svg"
                     text: qsTr("Biking")
-                }
-
-                SportIcon {
-                    imageSource: "qrc:/images/sports/walk.svg"
-                    text: qsTr("Walking")
-                }
-
-                SportIcon {
-                    imageSource: "qrc:/images/sports/run.svg"
-                    text: qsTr("Running")
-                }
-
-                SportIcon {
-                    imageSource: "qrc:/images/sports/skate.svg"
-                    text: qsTr("Skating")
-                }
-
-                SportIcon {
-                    imageSource: "qrc:/images/sports/bike.svg"
-                    text: qsTr("Biking")
+                    updateInterval: 0
                 }
             }
         }
-
-//        Component.onCompleted: positionSource.start()
-
-//        PositionSource {
-//            id: positionSource
-//        }
     }
 }

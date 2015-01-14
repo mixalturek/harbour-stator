@@ -23,12 +23,13 @@ import Sailfish.Silica 1.0
 BackgroundItem {
     property alias imageSource: image.source
     property alias text: label.text
+    property int updateInterval
 
     width: image.width;
     height: image.height + label.height
 
     onClicked: {
-        pageStack.push(Qt.resolvedUrl("../pages/SportPage.qml"), {sport: label.text})
+        pageStack.push(Qt.resolvedUrl("../pages/SportPage.qml"), {sport: label.text, updateInterval: updateInterval})
         pageStack.pushAttached(Qt.resolvedUrl("../pages/ResultsPage.qml"), {sport: label.text})
     }
 

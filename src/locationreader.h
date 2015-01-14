@@ -31,6 +31,7 @@
 class LocationReader : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval)
 
 public:
     /**
@@ -43,6 +44,9 @@ public:
      * @brief Destructor.
      */
     virtual ~LocationReader();
+
+    int updateInterval() const;
+    void setUpdateInterval(int millis);
 
 signals:
     /**

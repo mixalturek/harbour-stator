@@ -28,6 +28,7 @@ Page {
 
     property string sport: ""
     property bool paused: true
+    property alias updateInterval: locationReader.updateInterval
 
     SilicaFlickable {
         id: flickable
