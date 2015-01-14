@@ -64,13 +64,13 @@ Page {
             KeyValue {
                 id: duration
                 key: qsTr("Duration")
-                value: "00:00:00"
+                value: formatDuration(0)
             }
 
             KeyValue {
                 id: distance
                 key: qsTr("Distance")
-                value: "0"
+                value: formatDistance(0)
                 unit: qsTr("km")
             }
 
@@ -84,14 +84,14 @@ Page {
             KeyValue {
                 id: currentSpeed
                 key: qsTr("Current Speed")
-                value: "0"
+                value: formatSpeed(0)
                 unit: qsTr("km/h")
             }
 
             KeyValue {
                 id: averageSpeed
                 key: qsTr("Average Speed")
-                value: "0"
+                value: formatSpeed(0)
                 unit: qsTr("km/h")
             }
         }
@@ -102,7 +102,9 @@ Page {
     LocationReader {
         id: locationReader
         onDurationUpdated: duration.value = formatDuration(millis)
+        onDistanceUpdated: distance.value = formatDistance(meters)
         onCurrentSpeedUpdated: currentSpeed.value = formatSpeed(metersPerSecond)
+        onAverageSpeedUpdated: averageSpeed.value = formatSpeed(metersPerSecond)
     }
 
     function formatDuration(millis) {
@@ -119,7 +121,11 @@ Page {
         return hours + ":" + minutes + ":" + seconds
     }
 
+    function formatDistance(meters) {
+        return (meters / 1000.0).toFixed(1)
+    }
+
     function formatSpeed(metersPerSecond) {
-        return (metersPerSecond * 3.6).toFixed(2)
+        return (metersPerSecond * 3.6).toFixed(1)
     }
 }

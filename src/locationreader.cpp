@@ -29,8 +29,9 @@ LocationReader::LocationReader(QObject *parent) :
     positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
     state(STATE_BEGINNING),
     duration(0),
-    currentSpeed(0),
-    lastTimestamp(0)
+    distance(0),
+    lastTimestamp(0),
+    lastPosition()
 {
     if(positionSource != NULL) {
         positionSource->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
@@ -125,10 +126,6 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 
     QGeoCoordinate coordinate = info.coordinate();
     qDebug() << "QGeoCoordinate:" << coordinate;
-    qDebug() << "Latitude:" << coordinate.latitude();
-    qDebug() << "Longitude:" << coordinate.longitude();
-    qDebug() << "Altitude:" << coordinate.altitude();
-
     qDebug() << "Direction:" << (info.hasAttribute(QGeoPositionInfo::Direction)
         ? QString::number(info.attribute(QGeoPositionInfo::Direction)) : "undefined");
     qDebug() << "GroundSpeed:" << (info.hasAttribute(QGeoPositionInfo::GroundSpeed)
@@ -148,18 +145,23 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
         return;
     }
 
-    qint64 timestamp = info.timestamp().toMSecsSinceEpoch();
-
     if(state == STATE_MULTIPLE_EVENTS) {
-        duration += timestamp - lastTimestamp;
+        duration += info.timestamp().toMSecsSinceEpoch() - lastTimestamp;
         emit durationUpdated(duration);
 
-        if(info.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
-            currentSpeed = info.attribute(QGeoPositionInfo::GroundSpeed);
-            emit currentSpeedUpdated(currentSpeed);
+        distance += lastPosition.distanceTo(info.coordinate());
+        emit distanceUpdated(distance);
+
+        qreal currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
+            ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
+        emit currentSpeedUpdated(currentSpeed);
+
+        if(duration != 0) {
+            emit averageSpeedUpdated(distance / duration);
         }
     }
 
     state = STATE_MULTIPLE_EVENTS;
-    lastTimestamp = timestamp;
+    lastTimestamp = info.timestamp().toMSecsSinceEpoch();
+    lastPosition = info.coordinate();
 }

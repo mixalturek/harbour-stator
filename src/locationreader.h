@@ -56,10 +56,22 @@ signals:
     void durationUpdated(qint64 millis);
 
     /**
+     * @brief Total distance updated.
+     * @param meters distance in meters
+     */
+    void distanceUpdated(qreal meters);
+
+    /**
      * @brief Current ground speed changed.
      * @param metersPerSecond speed in meters per second
      */
     void currentSpeedUpdated(qreal metersPerSecond);
+
+    /**
+     * @brief Average ground speed changed.
+     * @param metersPerSecond speed in meters per second
+     */
+    void averageSpeedUpdated(qreal metersPerSecond);
 
 public slots:
     /**
@@ -85,19 +97,24 @@ private:
     LocationReaderState state;
 
     /**
-     * @brief Total duration of sport activity.
+     * @brief Total duration of sport activity, in milliseconds.
      */
     qint64 duration;
 
     /**
-     * @brief Current ground speed in meters per second.
+     * @brief Total distance reached during sport activity, in meters.
      */
-    qreal currentSpeed;
+    qreal distance;
 
     /**
      * @brief Timestamp of last valid position event, in milliseconds.
      */
     qint64 lastTimestamp;
+
+    /**
+     * @brief Position in last valid position event.
+     */
+    QGeoCoordinate lastPosition;
 };
 
 #endif // LOCATIONREADER_H
