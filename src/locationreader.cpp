@@ -84,7 +84,7 @@ void LocationReader::setUpdateInterval(int millis)
         return;
     }
 
-    qDebug() << "Setting GPS update interval:" << millis << " ms";
+    qDebug() << "Setting GPS update interval:" << millis << "ms";
     positionSource->setUpdateInterval(millis);
 }
 
@@ -157,7 +157,7 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
         emit currentSpeedUpdated(currentSpeed);
 
         if(duration != 0) {
-            emit averageSpeedUpdated(distance / duration);
+            emit averageSpeedUpdated(distance / (duration / 1000.0));
         }
     }
 
