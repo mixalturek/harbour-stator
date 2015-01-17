@@ -103,32 +103,32 @@ private:
     /**
      * @brief Source of GEO position information, may be NULL on error.
      */
-    QGeoPositionInfoSource* positionSource;
+    QGeoPositionInfoSource* m_positionSource;
 
     /**
      * @brief State of location reader to prevent computations on invalid data.
      */
-    LocationReaderState state;
+    LocationReaderState m_state;
 
     /**
      * @brief Timer for duration calculation.
      */
-    QElapsedTimer elapsedTimer;
+    QElapsedTimer m_elapsedTimer;
 
     /**
      * @brief Partial duration of sport activity, in milliseconds.
      */
-    qint64 partialDuration;
+    qint64 m_partialDuration;
 
     /**
      * @brief Total distance reached during sport activity, in meters.
      */
-    qreal distance;
+    qreal m_distance;
 
     /**
      * @brief Position in last valid position event.
      */
-    QGeoCoordinate lastPosition;
+    QGeoCoordinate m_lastPosition;
 };
 
 #endif // LOCATIONREADER_H

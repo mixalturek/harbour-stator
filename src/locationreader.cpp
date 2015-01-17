@@ -32,27 +32,27 @@ const int MAX_TIME_DIFFERENCE = 60000;
 
 LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
-    positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
-    state(STATE_BEGINNING),
-    elapsedTimer(),
-    partialDuration(0),
-    distance(0),
-    lastPosition()
+    m_positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
+    m_state(STATE_BEGINNING),
+    m_elapsedTimer(),
+    m_partialDuration(0),
+    m_distance(0),
+    m_lastPosition()
 {
-    if(positionSource != NULL) {
-        positionSource->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
+    if(m_positionSource != NULL) {
+        m_positionSource->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
 
-        connect(positionSource, SIGNAL(error(QGeoPositionInfoSource::Error)),
+        connect(m_positionSource, SIGNAL(error(QGeoPositionInfoSource::Error)),
                 this, SLOT(error(QGeoPositionInfoSource::Error)));
-        connect(positionSource, SIGNAL(updateTimeout()),
+        connect(m_positionSource, SIGNAL(updateTimeout()),
                 this, SLOT(updateTimeout()));
-        connect(positionSource, SIGNAL(positionUpdated(QGeoPositionInfo)),
+        connect(m_positionSource, SIGNAL(positionUpdated(QGeoPositionInfo)),
                 this, SLOT(positionUpdated(QGeoPositionInfo)));
 
         qDebug() << "Available position sources:" << QGeoPositionInfoSource::availableSources();
-        qDebug() << "Used position source:" << positionSource->sourceName();
-        qDebug() << "Minimum update interval:" << positionSource->minimumUpdateInterval();
-        qDebug() << "Update interval:" << positionSource->updateInterval();
+        qDebug() << "Used position source:" << m_positionSource->sourceName();
+        qDebug() << "Minimum update interval:" << m_positionSource->minimumUpdateInterval();
+        qDebug() << "Update interval:" << m_positionSource->updateInterval();
     } else {
         qWarning() << "Creating of QGeoPositionInfoSource failed";
     }
@@ -62,41 +62,41 @@ LocationReader::~LocationReader()
 {
     qDebug() << "Location reader destructor";
 
-    if(positionSource != NULL) {
-        positionSource->stopUpdates();
+    if(m_positionSource != NULL) {
+        m_positionSource->stopUpdates();
 
         // Released by Qt parent mechanism
-        // delete positionSource;
-        // positionSource = NULL;
+        // delete m_positionSource;
+        // m_positionSource = NULL;
     }
 }
 
 int LocationReader::updateInterval() const
 {
-    if(positionSource == NULL) {
+    if(m_positionSource == NULL) {
         qWarning() << "Position source is NULL while getting update interval";
         // TODO: notification to the user
         return 0;
     }
 
-    return positionSource->updateInterval();
+    return m_positionSource->updateInterval();
 }
 
 void LocationReader::setUpdateInterval(int millis)
 {
-    if(positionSource == NULL) {
+    if(m_positionSource == NULL) {
         qWarning() << "Position source is NULL while setting update interval";
         // TODO: notification to the user
         return;
     }
 
     qDebug() << "Setting GPS update interval:" << millis << "ms";
-    positionSource->setUpdateInterval(millis);
+    m_positionSource->setUpdateInterval(millis);
 }
 
 void LocationReader::enableUpdates(bool enable)
 {
-    if(positionSource == NULL) {
+    if(m_positionSource == NULL) {
         qWarning() << "Position source is NULL while enabling updates";
         // TODO: notification to the user
         return;
@@ -104,22 +104,22 @@ void LocationReader::enableUpdates(bool enable)
 
     if(enable) {
         qDebug() << "Enabling location updates";
-        state = STATE_BEGINNING;
-        positionSource->startUpdates();
-        elapsedTimer.start();
+        m_state = STATE_BEGINNING;
+        m_positionSource->startUpdates();
+        m_elapsedTimer.start();
     } else {
         qDebug() << "Disabling location updates";
-        positionSource->stopUpdates();
-        partialDuration += elapsedTimer.elapsed();
-        elapsedTimer.invalidate();
+        m_positionSource->stopUpdates();
+        m_partialDuration += m_elapsedTimer.elapsed();
+        m_elapsedTimer.invalidate();
     }
 }
 
 qint64 LocationReader::duration() const {
-    if(elapsedTimer.isValid()) {
-        return partialDuration + elapsedTimer.elapsed();
+    if(m_elapsedTimer.isValid()) {
+        return m_partialDuration + m_elapsedTimer.elapsed();
     } else {
-        return partialDuration;
+        return m_partialDuration;
     }
 }
 
@@ -146,9 +146,9 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 
     dumpPositionInfo(info);
 
-    if(state == STATE_MULTIPLE_EVENTS) {
-        distance += lastPosition.distanceTo(info.coordinate());
-        emit distanceUpdated(distance);
+    if(m_state == STATE_MULTIPLE_EVENTS) {
+        m_distance += m_lastPosition.distanceTo(info.coordinate());
+        emit distanceUpdated(m_distance);
 
         qreal currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
             ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
@@ -156,12 +156,12 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 
         quint64 currentDuration = duration();
         if(currentDuration != 0) {
-            emit averageSpeedUpdated(distance / (currentDuration / 1000.0));
+            emit averageSpeedUpdated(m_distance / (currentDuration / 1000.0));
         }
     }
 
-    state = STATE_MULTIPLE_EVENTS;
-    lastPosition = info.coordinate();
+    m_state = STATE_MULTIPLE_EVENTS;
+    m_lastPosition = info.coordinate();
 }
 
 void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) {
