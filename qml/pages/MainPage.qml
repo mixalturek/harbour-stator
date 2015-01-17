@@ -49,6 +49,7 @@ Page {
             anchors {
                 right: parent.right
                 left: parent.left
+                margins: Theme.paddingLarge
             }
 
             Flow {
@@ -56,26 +57,50 @@ Page {
                 spacing: Theme.paddingLarge
 
                 SportIcon {
-                    imageSource: "qrc:/images/sports/walk.svg"
+                    imageSource: "qrc:/images/sports/walking.svg"
                     text: qsTr("Walking")
                     updateInterval: 10000
                 }
 
                 SportIcon {
-                    imageSource: "qrc:/images/sports/run.svg"
+                    imageSource: "qrc:/images/sports/running.svg"
                     text: qsTr("Running")
                     updateInterval: 5000
                 }
 
                 SportIcon {
-                    imageSource: "qrc:/images/sports/skate.svg"
+                    imageSource: "qrc:/images/sports/skating.svg"
                     text: qsTr("Skating")
+                    updateInterval: 3000
+                }
+
+                SportIcon {
+                    imageSource: "qrc:/images/sports/skiing.svg"
+                    text: qsTr("Skiing")
+                    updateInterval: 3000
+                }
+
+                SportIcon {
+                    imageSource: "qrc:/images/sports/biking.svg"
+                    text: qsTr("Biking")
                     updateInterval: 2000
                 }
 
                 SportIcon {
-                    imageSource: "qrc:/images/sports/bike.svg"
-                    text: qsTr("Biking")
+                    imageSource: "qrc:/images/sports/riding.svg"
+                    text: qsTr("Riding")
+                    updateInterval: 2000
+                }
+
+                SportIcon {
+                    imageSource: "qrc:/images/sports/driving.svg"
+                    text: qsTr("Driving")
+                    updateInterval: 0
+                }
+
+                SportIcon {
+                    imageSource: "qrc:/images/sports/training.svg"
+                    text: qsTr("Training")
                     updateInterval: 0
                 }
             }

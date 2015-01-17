@@ -45,10 +45,16 @@ OTHER_FILES += qml/harbour-stator.qml \
     qml/components/SportIcon.qml \
     qml/components/KeyValue.qml \
     qml/pages/ResultsPage.qml \
-    resources/bike.svg \
-    resources/run.svg \
-    resources/skate.svg \
-    resources/walk.svg
+    resources/images/sports/walking.svg \
+    resources/images/sports/running.svg \
+    resources/images/sports/skating.svg \
+    resources/images/sports/skiing.svg \
+    resources/images/sports/biking.svg \
+    resources/images/sports/riding.svg \
+    resources/images/sports/driving.svg \
+    resources/images/sports/training.svg \
+    resources/images/sports/README.txt \
+    resources/images/sports/TEMPLATE.svg
 
 # to disable building translations every time, comment out the
 # following CONFIG line

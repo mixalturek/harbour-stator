@@ -1,8 +1,12 @@
 <RCC>
-    <qresource prefix="/images/sports">
-        <file>walk.svg</file>
-        <file>run.svg</file>
-        <file>skate.svg</file>
-        <file>bike.svg</file>
+    <qresource prefix="/">
+        <file>images/sports/walking.svg</file>
+        <file>images/sports/running.svg</file>
+        <file>images/sports/skating.svg</file>
+        <file>images/sports/skiing.svg</file>
+        <file>images/sports/biking.svg</file>
+        <file>images/sports/riding.svg</file>
+        <file>images/sports/driving.svg</file>
+        <file>images/sports/training.svg</file>
     </qresource>
 </RCC>

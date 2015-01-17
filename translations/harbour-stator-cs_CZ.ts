@@ -73,6 +73,22 @@
         <source>Running</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Training</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Driving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skiing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Riding</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ResultsPage</name>
