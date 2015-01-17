@@ -21,6 +21,7 @@
 #define LOCATIONREADER_H
 
 #include <QObject>
+#include <QElapsedTimer>
 #include <QtPositioning/QGeoPositionInfoSource>
 #include <QtPositioning/QGeoPositionInfo>
 #include "locationreaderstate.h"
@@ -32,6 +33,7 @@ class LocationReader : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval)
+    Q_PROPERTY(qint64 duration READ duration)
 
 public:
     /**
@@ -45,16 +47,25 @@ public:
      */
     virtual ~LocationReader();
 
+    /**
+     * @brief Get update interval.
+     * @return update interval in milliseconds
+     */
     int updateInterval() const;
+
+    /**
+     * @brief Set update interval.
+     * @param millis update interval in milliseconds
+     */
     void setUpdateInterval(int millis);
 
-signals:
     /**
-     * @brief Duration of sport activity changed.
-     * @param millis new duration in milliseconds
+     * @brief Get total duration.
+     * @return duration in milliseconds
      */
-    void durationUpdated(qint64 millis);
+    qint64 duration() const;
 
+signals:
     /**
      * @brief Total distance updated.
      * @param meters distance in meters
@@ -100,19 +111,19 @@ private:
     LocationReaderState state;
 
     /**
-     * @brief Total duration of sport activity, in milliseconds.
+     * @brief Timer for duration calculation.
      */
-    qint64 duration;
+    QElapsedTimer elapsedTimer;
+
+    /**
+     * @brief Partial duration of sport activity, in milliseconds.
+     */
+    qint64 partialDuration;
 
     /**
      * @brief Total distance reached during sport activity, in meters.
      */
     qreal distance;
-
-    /**
-     * @brief Timestamp of last valid position event, in milliseconds.
-     */
-    qint64 lastTimestamp;
 
     /**
      * @brief Position in last valid position event.

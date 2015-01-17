@@ -29,7 +29,6 @@ Page {
     property string sport: ""
     property bool paused: true
     property alias updateInterval: locationReader.updateInterval
-    property int timerBasedDuration: 0
 
     SilicaFlickable {
         id: flickable
@@ -66,17 +65,14 @@ Page {
             KeyValue {
                 id: duration
                 key: qsTr("Duration")
-                value: formatDuration(timerBasedDuration)
+                value: formatDuration(0)
 
                 Timer {
                     id: durationTimer
                     interval: 1000
                     repeat: true
                     running: !paused
-                    onTriggered: {
-                        timerBasedDuration += 1000
-                        duration.value = formatDuration(timerBasedDuration)
-                    }
+                    onTriggered: duration.value = formatDuration(locationReader.duration)
                  }
             }
 
@@ -114,7 +110,6 @@ Page {
 
     LocationReader {
         id: locationReader
-        // onDurationUpdated: duration.value = formatDuration(millis)
         onDistanceUpdated: distance.value = formatDistance(meters)
         onCurrentSpeedUpdated: currentSpeed.value = formatSpeed(metersPerSecond)
         onAverageSpeedUpdated: averageSpeed.value = formatSpeed(metersPerSecond)

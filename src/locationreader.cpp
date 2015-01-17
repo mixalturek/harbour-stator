@@ -34,9 +34,9 @@ LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
     positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
     state(STATE_BEGINNING),
-    duration(0),
+    elapsedTimer(),
+    partialDuration(0),
     distance(0),
-    lastTimestamp(0),
     lastPosition()
 {
     if(positionSource != NULL) {
@@ -106,9 +106,20 @@ void LocationReader::enableUpdates(bool enable)
         qDebug() << "Enabling location updates";
         state = STATE_BEGINNING;
         positionSource->startUpdates();
+        elapsedTimer.start();
     } else {
         qDebug() << "Disabling location updates";
         positionSource->stopUpdates();
+        partialDuration += elapsedTimer.elapsed();
+        elapsedTimer.invalidate();
+    }
+}
+
+qint64 LocationReader::duration() const {
+    if(elapsedTimer.isValid()) {
+        return partialDuration + elapsedTimer.elapsed();
+    } else {
+        return partialDuration;
     }
 }
 
@@ -136,9 +147,6 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     dumpPositionInfo(info);
 
     if(state == STATE_MULTIPLE_EVENTS) {
-        duration += info.timestamp().toMSecsSinceEpoch() - lastTimestamp;
-        emit durationUpdated(duration);
-
         distance += lastPosition.distanceTo(info.coordinate());
         emit distanceUpdated(distance);
 
@@ -146,13 +154,13 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
             ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
         emit currentSpeedUpdated(currentSpeed);
 
-        if(duration != 0) {
-            emit averageSpeedUpdated(distance / (duration / 1000.0));
+        quint64 currentDuration = duration();
+        if(currentDuration != 0) {
+            emit averageSpeedUpdated(distance / (currentDuration / 1000.0));
         }
     }
 
     state = STATE_MULTIPLE_EVENTS;
-    lastTimestamp = info.timestamp().toMSecsSinceEpoch();
     lastPosition = info.coordinate();
 }
 
