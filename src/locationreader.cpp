@@ -24,6 +24,12 @@
 
 #include "locationreader.h"
 
+/**
+ * @brief Maximal time difference from now to consider a positioning event
+ * to be valid, in milliseconds.
+ */
+const int MAX_TIME_DIFFERENCE = 60000;
+
 LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
     positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
@@ -120,30 +126,14 @@ void LocationReader::error(QGeoPositionInfoSource::Error positioningError)
 
 void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 {
-    qDebug() << "----";
-    qDebug() << "Position updated";
-    qDebug() << "Timestamp:" << info.timestamp();
+    qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
-    QGeoCoordinate coordinate = info.coordinate();
-    qDebug() << "QGeoCoordinate:" << coordinate;
-    qDebug() << "Direction:" << (info.hasAttribute(QGeoPositionInfo::Direction)
-        ? QString::number(info.attribute(QGeoPositionInfo::Direction)) : "undefined");
-    qDebug() << "GroundSpeed:" << (info.hasAttribute(QGeoPositionInfo::GroundSpeed)
-        ? QString::number(info.attribute(QGeoPositionInfo::GroundSpeed)) : "undefined");
-    qDebug() << "VerticalSpeed:" << (info.hasAttribute(QGeoPositionInfo::VerticalSpeed)
-        ? QString::number(info.attribute(QGeoPositionInfo::VerticalSpeed)) : "undefined");
-    qDebug() << "MagneticVariation:" << (info.hasAttribute(QGeoPositionInfo::MagneticVariation)
-        ? QString::number(info.attribute(QGeoPositionInfo::MagneticVariation)) : "undefined");
-    qDebug() << "HorizontalAccuracy:" << (info.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)
-        ? QString::number(info.attribute(QGeoPositionInfo::HorizontalAccuracy)) : "undefined");
-    qDebug() << "VerticalAccuracy:" << (info.hasAttribute(QGeoPositionInfo::VerticalAccuracy)
-        ? QString::number(info.attribute(QGeoPositionInfo::VerticalAccuracy)): "undefined");
-    qDebug() << "----";
-
-    if(state == STATE_BEGINNING) {
-        state = STATE_FIRST_EVENT;
+    if(now - MAX_TIME_DIFFERENCE > info.timestamp().toMSecsSinceEpoch()) {
+        qDebug() << "Position is too old, ignoring event:" << info.timestamp();
         return;
     }
+
+    dumpPositionInfo(info);
 
     if(state == STATE_MULTIPLE_EVENTS) {
         duration += info.timestamp().toMSecsSinceEpoch() - lastTimestamp;
@@ -164,4 +154,32 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     state = STATE_MULTIPLE_EVENTS;
     lastTimestamp = info.timestamp().toMSecsSinceEpoch();
     lastPosition = info.coordinate();
+}
+
+void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) {
+    qDebug() << "----";
+    qDebug() << "Timestamp:" << info.timestamp();
+    qDebug() << "Coordinate:" << info.coordinate();
+
+    if(info.hasAttribute(QGeoPositionInfo::GroundSpeed)) {
+        qDebug() << "GroundSpeed:" << info.attribute(QGeoPositionInfo::GroundSpeed);
+    }
+
+    if(info.hasAttribute(QGeoPositionInfo::VerticalSpeed)) {
+        qDebug() << "VerticalSpeed:" << info.attribute(QGeoPositionInfo::VerticalSpeed);
+    }
+
+    if(info.hasAttribute(QGeoPositionInfo::MagneticVariation)) {
+        qDebug() << "MagneticVariation:" << info.attribute(QGeoPositionInfo::MagneticVariation);
+    }
+
+    if(info.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)) {
+        qDebug() << "HorizontalAccuracy:" << info.attribute(QGeoPositionInfo::HorizontalAccuracy);
+    }
+
+    if(info.hasAttribute(QGeoPositionInfo::VerticalAccuracy)) {
+        qDebug() << "VerticalAccuracy:" << info.attribute(QGeoPositionInfo::VerticalAccuracy);
+    }
+
+    qDebug() << "----";
 }

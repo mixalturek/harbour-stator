@@ -86,6 +86,9 @@ private slots:
     void positionUpdated(const QGeoPositionInfo &info);
 
 private:
+    void dumpPositionInfo(const QGeoPositionInfo &info);
+
+private:
     /**
      * @brief Source of GEO position information, may be NULL on error.
      */
