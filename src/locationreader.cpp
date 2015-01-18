@@ -39,7 +39,9 @@ LocationReader::LocationReader(QObject *parent) :
     m_distance(0),
     m_currentSpeed(0),
     m_lastPosition(),
-    m_refreshGuiNotifications(true)
+    m_refreshGuiNotifications(true),
+    m_altitudePositive(0),
+    m_altitudeNegative(0)
 {
     if(m_positionSource != NULL) {
         m_positionSource->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
@@ -142,10 +144,20 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
         return;
     }
 
+    QGeoCoordinate coordinate = info.coordinate();
+
     if(m_state == STATE_MULTIPLE_EVENTS) {
-        m_distance += m_lastPosition.distanceTo(info.coordinate());
+        m_distance += m_lastPosition.distanceTo(coordinate);
         m_currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
             ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
+
+        if(coordinate.type() == QGeoCoordinate::Coordinate3D) {
+            if(coordinate.altitude() > 0) {
+                m_altitudePositive += coordinate.altitude();
+            } else {
+                m_altitudeNegative += coordinate.altitude();
+            }
+        }
 
         if(m_refreshGuiNotifications) {
             emit refreshGui();
@@ -153,7 +165,7 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     }
 
     m_state = STATE_MULTIPLE_EVENTS;
-    m_lastPosition = info.coordinate();
+    m_lastPosition = coordinate;
 }
 
 void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) const {
@@ -226,6 +238,11 @@ QString LocationReader::averageSpeed() const
     } else {
         return formatSpeed(0);
     }
+}
+
+QString LocationReader::altitude() const {
+    QString result;
+    return result.sprintf("↑ %0.1f, ↓ %0.1f", m_altitudePositive, m_altitudeNegative);
 }
 
 QString LocationReader::formatDuration(qint64 millis) const {

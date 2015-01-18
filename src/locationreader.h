@@ -35,6 +35,7 @@ class LocationReader : public QObject
     Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval)
     Q_PROPERTY(QString duration READ duration)
     Q_PROPERTY(QString distance READ distance)
+    Q_PROPERTY(QString altitude READ altitude)
     Q_PROPERTY(QString currentSpeed READ currentSpeed)
     Q_PROPERTY(QString averageSpeed READ averageSpeed)
     Q_PROPERTY(bool refreshGuiNotifications READ refreshGuiNotifications WRITE setRefreshGuiNotifications)
@@ -95,6 +96,7 @@ private:
     QString formatDuration(qint64 millis) const;
     QString formatDistance(qreal meters) const;
     QString formatSpeed(qreal metersPerSecond) const;
+    QString altitude() const;
 
 private:
     /**
@@ -136,6 +138,16 @@ private:
      * @brief Enable flag for GUI refreshing.
      */
     bool m_refreshGuiNotifications;
+
+    /**
+     * @brief Positive increments of altitude.
+     */
+    qreal m_altitudePositive;
+
+    /**
+     * @brief Negative increments of altitude.
+     */
+    qreal m_altitudeNegative;
 };
 
 #endif // LOCATIONREADER_H
