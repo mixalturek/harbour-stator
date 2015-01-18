@@ -59,43 +59,43 @@ Page {
                 SportIcon {
                     imageSource: "qrc:/images/sports/walking.svg"
                     text: qsTr("Walking")
-                    updateInterval: 10000
+                    updateInterval: 45000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/running.svg"
                     text: qsTr("Running")
-                    updateInterval: 5000
+                    updateInterval: 30000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/skating.svg"
                     text: qsTr("Skating")
-                    updateInterval: 3000
+                    updateInterval: 20000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/skiing.svg"
                     text: qsTr("Skiing")
-                    updateInterval: 3000
+                    updateInterval: 20000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/biking.svg"
                     text: qsTr("Biking")
-                    updateInterval: 2000
+                    updateInterval: 15000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/riding.svg"
                     text: qsTr("Riding")
-                    updateInterval: 2000
+                    updateInterval: 15000
                 }
 
                 SportIcon {
                     imageSource: "qrc:/images/sports/driving.svg"
                     text: qsTr("Driving")
-                    updateInterval: 0
+                    updateInterval: 3000
                 }
 
                 SportIcon {
