@@ -100,6 +100,22 @@
 <context>
     <name>SportPage</name>
     <message>
+        <source>Go</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paused</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,11 +124,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Current Speed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Average Speed</source>
+        <source>km</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -120,11 +132,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>km</source>
+        <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>m</source>
+        <source>Current Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -132,19 +144,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Paused</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Active</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Go</source>
+        <source>Average Speed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

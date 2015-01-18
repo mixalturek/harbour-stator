@@ -1,2 +1,2 @@
-/rpm/*.spec
+/rpm/*.spec*
 /*.pro.user

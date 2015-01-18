@@ -29,6 +29,12 @@ Page {
     property string sport: ""
     property bool paused: true
     property alias updateInterval: locationReader.updateInterval
+    property bool pageActive: Qt.application.active && page.status === PageStatus.Active
+
+    onPageActiveChanged: {
+        durationTimer.running = !paused && pageActive
+        locationReader.refreshGuiNotifications = !paused && pageActive
+    }
 
     SilicaFlickable {
         id: flickable
@@ -41,7 +47,7 @@ Page {
                 onClicked: {
                     paused = !paused
                     locationReader.enableUpdates(!paused)
-                    durationTimer.running = !paused
+                    durationTimer.running = !paused && pageActive
                 }
             }
         }
@@ -65,21 +71,21 @@ Page {
             KeyValue {
                 id: duration
                 key: qsTr("Duration")
-                value: formatDuration(0)
+                value: "00:00:00"
 
                 Timer {
                     id: durationTimer
                     interval: 1000
                     repeat: true
-                    running: !paused
-                    onTriggered: duration.value = formatDuration(locationReader.duration)
+                    running: !paused && pageActive
+                    onTriggered: duration.value = locationReader.duration
                  }
             }
 
             KeyValue {
                 id: distance
                 key: qsTr("Distance")
-                value: formatDistance(0)
+                value: "0.0"
                 unit: qsTr("km")
             }
 
@@ -93,14 +99,14 @@ Page {
             KeyValue {
                 id: currentSpeed
                 key: qsTr("Current Speed")
-                value: formatSpeed(0)
+                value: "0.0"
                 unit: qsTr("km/h")
             }
 
             KeyValue {
                 id: averageSpeed
                 key: qsTr("Average Speed")
-                value: formatSpeed(0)
+                value: "0.0"
                 unit: qsTr("km/h")
             }
         }
@@ -110,30 +116,10 @@ Page {
 
     LocationReader {
         id: locationReader
-        onDistanceUpdated: distance.value = formatDistance(meters)
-        onCurrentSpeedUpdated: currentSpeed.value = formatSpeed(metersPerSecond)
-        onAverageSpeedUpdated: averageSpeed.value = formatSpeed(metersPerSecond)
-    }
-
-    function formatDuration(millis) {
-        var hours = Math.floor(millis / 3600000);
-        var hoursRemainder = millis % 3600000;
-        var minutes = Math.floor(hoursRemainder / 60000);
-        var minutesRemainder = hoursRemainder % 60000;
-        var seconds = Math.floor(minutesRemainder / 1000);
-
-        hours = (hours < 10) ? '0' + hours : hours;
-        minutes = (minutes < 10) ? '0' + minutes : minutes;
-        seconds = (seconds < 10) ? '0' + seconds : seconds;
-
-        return hours + ":" + minutes + ":" + seconds
-    }
-
-    function formatDistance(meters) {
-        return (meters / 1000.0).toFixed(1)
-    }
-
-    function formatSpeed(metersPerSecond) {
-        return (metersPerSecond * 3.6).toFixed(1)
+        onRefreshGui: {
+            distance.value = locationReader.distance
+            currentSpeed.value = locationReader.currentSpeed
+            averageSpeed.value = locationReader.averageSpeed
+        }
     }
 }

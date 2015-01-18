@@ -33,7 +33,11 @@ class LocationReader : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval)
-    Q_PROPERTY(qint64 duration READ duration)
+    Q_PROPERTY(QString duration READ duration)
+    Q_PROPERTY(QString distance READ distance)
+    Q_PROPERTY(QString currentSpeed READ currentSpeed)
+    Q_PROPERTY(QString averageSpeed READ averageSpeed)
+    Q_PROPERTY(bool refreshGuiNotifications READ refreshGuiNotifications WRITE setRefreshGuiNotifications)
 
 public:
     /**
@@ -59,30 +63,19 @@ public:
      */
     void setUpdateInterval(int millis);
 
-    /**
-     * @brief Get total duration.
-     * @return duration in milliseconds
-     */
-    qint64 duration() const;
+    bool refreshGuiNotifications() const;
+    void setRefreshGuiNotifications(bool refreshGuiNotifications);
+
+    QString duration() const;
+    QString distance() const;
+    QString currentSpeed() const;
+    QString averageSpeed() const;
 
 signals:
     /**
-     * @brief Total distance updated.
-     * @param meters distance in meters
+     * @brief Refresh GUI, parameter values update.
      */
-    void distanceUpdated(qreal meters);
-
-    /**
-     * @brief Current ground speed changed.
-     * @param metersPerSecond speed in meters per second
-     */
-    void currentSpeedUpdated(qreal metersPerSecond);
-
-    /**
-     * @brief Average ground speed changed.
-     * @param metersPerSecond speed in meters per second
-     */
-    void averageSpeedUpdated(qreal metersPerSecond);
+    void refreshGui();
 
 public slots:
     /**
@@ -97,7 +90,11 @@ private slots:
     void positionUpdated(const QGeoPositionInfo &info);
 
 private:
-    void dumpPositionInfo(const QGeoPositionInfo &info);
+    void dumpPositionInfo(const QGeoPositionInfo &info) const;
+    qint64 rawDuration() const;
+    QString formatDuration(qint64 millis) const;
+    QString formatDistance(qreal meters) const;
+    QString formatSpeed(qreal metersPerSecond) const;
 
 private:
     /**
@@ -126,9 +123,19 @@ private:
     qreal m_distance;
 
     /**
+     * @brief Current speed, in meters per second.
+     */
+    qreal m_currentSpeed;
+
+    /**
      * @brief Position in last valid position event.
      */
     QGeoCoordinate m_lastPosition;
+
+    /**
+     * @brief Enable flag for GUI refreshing.
+     */
+    bool m_refreshGuiNotifications;
 };
 
 #endif // LOCATIONREADER_H

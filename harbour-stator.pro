@@ -54,7 +54,8 @@ OTHER_FILES += qml/harbour-stator.qml \
     resources/images/sports/driving.svg \
     resources/images/sports/training.svg \
     resources/images/sports/README.txt \
-    resources/images/sports/TEMPLATE.svg
+    resources/images/sports/TEMPLATE.svg \
+    .gitignore
 
 # to disable building translations every time, comment out the
 # following CONFIG line

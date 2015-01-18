@@ -37,7 +37,9 @@ LocationReader::LocationReader(QObject *parent) :
     m_elapsedTimer(),
     m_partialDuration(0),
     m_distance(0),
-    m_lastPosition()
+    m_currentSpeed(0),
+    m_lastPosition(),
+    m_refreshGuiNotifications(true)
 {
     if(m_positionSource != NULL) {
         m_positionSource->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
@@ -115,14 +117,6 @@ void LocationReader::enableUpdates(bool enable)
     }
 }
 
-qint64 LocationReader::duration() const {
-    if(m_elapsedTimer.isValid()) {
-        return m_partialDuration + m_elapsedTimer.elapsed();
-    } else {
-        return m_partialDuration;
-    }
-}
-
 void LocationReader::updateTimeout()
 {
     qWarning() << "Position update timeout";
@@ -148,15 +142,11 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 
     if(m_state == STATE_MULTIPLE_EVENTS) {
         m_distance += m_lastPosition.distanceTo(info.coordinate());
-        emit distanceUpdated(m_distance);
-
-        qreal currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
+        m_currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
             ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
-        emit currentSpeedUpdated(currentSpeed);
 
-        quint64 currentDuration = duration();
-        if(currentDuration != 0) {
-            emit averageSpeedUpdated(m_distance / (currentDuration / 1000.0));
+        if(m_refreshGuiNotifications) {
+            emit refreshGui();
         }
     }
 
@@ -164,7 +154,7 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     m_lastPosition = info.coordinate();
 }
 
-void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) {
+void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) const {
     qDebug() << "----";
     qDebug() << "Timestamp:" << info.timestamp();
     qDebug() << "Coordinate:" << info.coordinate();
@@ -190,4 +180,69 @@ void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) {
     }
 
     qDebug() << "----";
+}
+
+bool LocationReader::refreshGuiNotifications() const
+{
+    return m_refreshGuiNotifications;
+}
+
+void LocationReader::setRefreshGuiNotifications(bool refreshGuiNotifications)
+{
+    m_refreshGuiNotifications = refreshGuiNotifications;
+}
+
+qint64 LocationReader::rawDuration() const {
+    if(m_elapsedTimer.isValid()) {
+        return m_partialDuration + m_elapsedTimer.elapsed();
+    } else {
+        return m_partialDuration;
+    }
+}
+
+QString LocationReader::duration() const
+{
+    return formatDuration(rawDuration());
+}
+
+QString LocationReader::distance() const
+{
+    return formatDistance(m_distance);
+}
+
+QString LocationReader::currentSpeed() const
+{
+    return formatSpeed(m_currentSpeed);
+}
+
+QString LocationReader::averageSpeed() const
+{
+    quint64 currentDuration = rawDuration();
+
+    if(currentDuration != 0) {
+        return formatSpeed(m_distance / (currentDuration / 1000.0));
+    } else {
+        return formatSpeed(0);
+    }
+}
+
+QString LocationReader::formatDuration(qint64 millis) const {
+    int hours = millis / 3600000;
+    int hoursRemainder = millis % 3600000;
+    int minutes = hoursRemainder / 60000;
+    int minutesRemainder = hoursRemainder % 60000;
+    int seconds = minutesRemainder / 1000;
+
+    QString result;
+    return result.sprintf("%02d:%02d:%02d", hours, minutes, seconds);
+}
+
+QString LocationReader::formatDistance(qreal meters) const {
+    QString result;
+    return result.sprintf("%0.1f", meters / 1000.0);
+}
+
+QString LocationReader::formatSpeed(qreal metersPerSecond) const {
+    QString result;
+    return result.sprintf("%0.1f", metersPerSecond * 3.6);
 }
