@@ -110,7 +110,7 @@ void LocationReader::enableUpdates(bool enable)
         qDebug() << "Enabling location updates";
         m_state = STATE_BEGINNING;
         m_positionSource->startUpdates();
-        m_elapsedTimer.start();
+        m_elapsedTimer.restart();
     } else {
         qDebug() << "Disabling location updates";
         m_positionSource->stopUpdates();
