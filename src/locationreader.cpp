@@ -30,12 +30,6 @@
  */
 const int MAX_TIME_DIFFERENCE = 60000;
 
-/**
- * @brief Minimial horizontal accuracy to process a positioning event, in meters.
- * If the value is higher, the event will be ignored.
- */
-const int MIN_HORIZONTAL_ACCURACY = 100;
-
 LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
     m_positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
@@ -145,13 +139,6 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 
     if(now - MAX_TIME_DIFFERENCE > info.timestamp().toMSecsSinceEpoch()) {
         qDebug() << "Position is too old, ignoring event:" << info.timestamp();
-        return;
-    }
-
-    if(info.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)
-            && info.attribute(QGeoPositionInfo::HorizontalAccuracy) > MIN_HORIZONTAL_ACCURACY) {
-        qDebug() << "Too low horizontal accuracy, ignoring event:"
-                 << info.attribute(QGeoPositionInfo::HorizontalAccuracy) << "m";
         return;
     }
 
