@@ -30,10 +30,15 @@
  */
 const int MAX_TIME_DIFFERENCE = 5 * 60 * 1000;
 
+/**
+ * @brief Number of position events to consider the position is valid.
+ */
+const int EVENTS_POSITION_VALID = 4;
+
 LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
     m_positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
-    m_state(STATE_BEGINNING),
+    m_numEvents(0),
     m_elapsedTimer(),
     m_partialDuration(0),
     m_distance(0),
@@ -41,7 +46,8 @@ LocationReader::LocationReader(QObject *parent) :
     m_lastPosition(),
     m_refreshGuiNotifications(true),
     m_altitudePositive(0),
-    m_altitudeNegative(0)
+    m_altitudeNegative(0),
+    m_updateInterval(0)
 {
     if(m_positionSource != NULL) {
         m_positionSource->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
@@ -56,7 +62,6 @@ LocationReader::LocationReader(QObject *parent) :
         qDebug() << "Available position sources:" << QGeoPositionInfoSource::availableSources();
         qDebug() << "Used position source:" << m_positionSource->sourceName();
         qDebug() << "Minimum update interval:" << m_positionSource->minimumUpdateInterval();
-        qDebug() << "Update interval:" << m_positionSource->updateInterval();
     } else {
         qWarning() << "Creating of QGeoPositionInfoSource failed";
     }
@@ -77,25 +82,12 @@ LocationReader::~LocationReader()
 
 int LocationReader::updateInterval() const
 {
-    if(m_positionSource == NULL) {
-        qWarning() << "Position source is NULL while getting update interval";
-        // TODO: notification to the user
-        return 0;
-    }
-
-    return m_positionSource->updateInterval();
+    return m_updateInterval;
 }
 
 void LocationReader::setUpdateInterval(int millis)
 {
-    if(m_positionSource == NULL) {
-        qWarning() << "Position source is NULL while setting update interval";
-        // TODO: notification to the user
-        return;
-    }
-
-    qDebug() << "Setting GPS update interval:" << millis << "ms";
-    m_positionSource->setUpdateInterval(millis);
+    m_updateInterval = millis;
 }
 
 void LocationReader::enableUpdates(bool enable)
@@ -108,8 +100,9 @@ void LocationReader::enableUpdates(bool enable)
 
     if(enable) {
         qDebug() << "Enabling location updates";
-        m_state = STATE_BEGINNING;
+        m_numEvents = 0;
         m_positionSource->startUpdates();
+        m_positionSource->setUpdateInterval(0);
         m_elapsedTimer.restart();
     } else {
         qDebug() << "Disabling location updates";
@@ -122,7 +115,8 @@ void LocationReader::enableUpdates(bool enable)
 void LocationReader::updateTimeout()
 {
     qWarning() << "Position update timeout";
-    // TODO: notification to the user
+    m_numEvents = 0;
+    m_positionSource->setUpdateInterval(0);
 }
 
 void LocationReader::error(QGeoPositionInfoSource::Error positioningError)
@@ -146,7 +140,12 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 
     QGeoCoordinate coordinate = info.coordinate();
 
-    if(m_state == STATE_MULTIPLE_EVENTS) {
+    if(m_numEvents == EVENTS_POSITION_VALID) {
+        qDebug() << "Position is considered valid, setting long term update interval:" << m_updateInterval;
+        m_positionSource->setUpdateInterval(m_updateInterval);
+    }
+
+    if(m_numEvents >= EVENTS_POSITION_VALID) {
         m_distance += m_lastPosition.distanceTo(coordinate);
         m_currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
             ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
@@ -160,11 +159,12 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
         }
 
         if(m_refreshGuiNotifications) {
+            qDebug() << "Refresh GUI";
             emit refreshGui();
         }
     }
 
-    m_state = STATE_MULTIPLE_EVENTS;
+    ++m_numEvents;
     m_lastPosition = coordinate;
 }
 

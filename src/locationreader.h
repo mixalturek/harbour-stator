@@ -24,7 +24,7 @@
 #include <QElapsedTimer>
 #include <QtPositioning/QGeoPositionInfoSource>
 #include <QtPositioning/QGeoPositionInfo>
-#include "locationreaderstate.h"
+
 
 /**
  * @brief Reader of GEO position.
@@ -105,9 +105,9 @@ private:
     QGeoPositionInfoSource* m_positionSource;
 
     /**
-     * @brief State of location reader to prevent computations on invalid data.
+     * @brief Number of received positioning events.
      */
-    LocationReaderState m_state;
+    int m_numEvents;
 
     /**
      * @brief Timer for duration calculation.
@@ -148,6 +148,11 @@ private:
      * @brief Negative increments of altitude.
      */
     qreal m_altitudeNegative;
+
+    /**
+     * @brief GPS update interval.
+     */
+    int m_updateInterval;
 };
 
 #endif // LOCATIONREADER_H
