@@ -162,6 +162,10 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
             qDebug() << "Refresh GUI";
             emit refreshGui();
         }
+
+#ifdef QT_DEBUG
+        dumpState();
+#endif // QT_DEBUG
     }
 
     ++m_numEvents;
@@ -192,8 +196,14 @@ void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) const {
     if(info.hasAttribute(QGeoPositionInfo::VerticalAccuracy)) {
         qDebug() << "VerticalAccuracy:" << info.attribute(QGeoPositionInfo::VerticalAccuracy);
     }
+}
 
-    qDebug() << "----";
+void LocationReader::dumpState() const {
+    qDebug() << "Duration:" << duration();
+    qDebug() << "Distance:" << distance();
+    qDebug() << "Altitude:" << altitude();
+    qDebug() << "Current speed:" << currentSpeed();
+    qDebug() << "Average speed:" << averageSpeed();
 }
 
 bool LocationReader::refreshGuiNotifications() const
@@ -257,11 +267,9 @@ QString LocationReader::formatDuration(qint64 millis) const {
 }
 
 QString LocationReader::formatDistance(qreal meters) const {
-    QString result;
-    return result.sprintf("%0.1f", meters / 1000.0);
+    return QString::number(meters / 1000.0, 'f', 1);
 }
 
 QString LocationReader::formatSpeed(qreal metersPerSecond) const {
-    QString result;
-    return result.sprintf("%0.1f", metersPerSecond * 3.6);
+    return QString::number(metersPerSecond * 3.6, 'f', 1);
 }

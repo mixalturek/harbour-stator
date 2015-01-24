@@ -92,6 +92,7 @@ private slots:
 
 private:
     void dumpPositionInfo(const QGeoPositionInfo &info) const;
+    void dumpState() const;
     qint64 rawDuration() const;
     QString formatDuration(qint64 millis) const;
     QString formatDistance(qreal meters) const;
