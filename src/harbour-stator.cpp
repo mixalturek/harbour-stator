@@ -24,9 +24,56 @@
 #include <sailfishapp.h>
 #include "locationreader.h"
 
+#define LOG_FILE "/home/nemo/stator.log"
+
+#ifdef LOG_FILE
+void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(context);
+
+    QFile outFile(LOG_FILE);
+    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream stream(&outFile);
+
+    stream << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+    switch (type) {
+        case QtDebugMsg:
+            stream << " DEBUG ";
+            break;
+
+        case QtWarningMsg:
+            stream << " WARN  ";
+            break;
+
+        case QtCriticalMsg:
+            stream << " CRIT  ";
+            break;
+
+        case QtFatalMsg:
+            stream << " FATAL ";
+            abort();
+            break;
+
+        default:
+            stream << " ????? ";
+            break;
+    }
+
+    stream << msg << endl;
+}
+#endif // LOG_FILE
+
 
 int main(int argc, char *argv[])
 {
+#ifdef LOG_FILE
+    qInstallMessageHandler(customMessageHandler);
+#endif // LOG_FILE
+
+    qDebug() << "===================== STARTING APPLICATION =====================";
+
+
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
     app->setApplicationName("stator");
 
