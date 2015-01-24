@@ -28,7 +28,7 @@
  * @brief Maximal time difference from now to consider a positioning event
  * to be valid, in milliseconds.
  */
-const int MAX_TIME_DIFFERENCE = 60000;
+const int MAX_TIME_DIFFERENCE = 5 * 60 * 1000;
 
 LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
