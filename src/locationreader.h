@@ -112,9 +112,9 @@ private:
     int m_numEvents;
 
     /**
-     * @brief Timer for duration calculation.
+     * @brief Timestamp of measurement start, in milliseconds.
      */
-    QElapsedTimer m_elapsedTimer;
+    qint64 m_startTime;
 
     /**
      * @brief Partial duration of sport activity, in milliseconds.

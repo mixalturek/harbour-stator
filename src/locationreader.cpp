@@ -39,7 +39,7 @@ LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
     m_positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
     m_numEvents(0),
-    m_elapsedTimer(),
+    m_startTime(-1),
     m_partialDuration(0),
     m_distance(0),
     m_currentSpeed(0),
@@ -103,12 +103,12 @@ void LocationReader::enableUpdates(bool enable)
         m_numEvents = 0;
         m_positionSource->startUpdates();
         m_positionSource->setUpdateInterval(0);
-        m_elapsedTimer.restart();
+        m_startTime = QDateTime::currentDateTime().currentMSecsSinceEpoch();
     } else {
         qDebug() << "Disabling location updates";
         m_positionSource->stopUpdates();
-        m_partialDuration += m_elapsedTimer.elapsed();
-        m_elapsedTimer.invalidate();
+        m_partialDuration += QDateTime::currentDateTime().currentMSecsSinceEpoch() - m_startTime;
+        m_startTime == -1;
     }
 }
 
@@ -223,8 +223,8 @@ void LocationReader::optionallyRefreshGui() const {
 }
 
 qint64 LocationReader::rawDuration() const {
-    if(m_elapsedTimer.isValid()) {
-        return m_partialDuration + m_elapsedTimer.elapsed();
+    if(m_startTime != -1) {
+        return m_partialDuration + QDateTime::currentDateTime().toMSecsSinceEpoch() - m_startTime;
     } else {
         return m_partialDuration;
     }
