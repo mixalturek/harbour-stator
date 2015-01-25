@@ -150,11 +150,12 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
         m_currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
             ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
 
-        if(coordinate.type() == QGeoCoordinate::Coordinate3D) {
-            if(coordinate.altitude() > 0) {
-                m_altitudePositive += coordinate.altitude();
+        if(coordinate.type() == QGeoCoordinate::Coordinate3D
+                && m_lastPosition.type() == QGeoCoordinate::Coordinate3D) {
+            if(coordinate.altitude() - m_lastPosition.altitude() > 0) {
+                m_altitudePositive += coordinate.altitude() - m_lastPosition.altitude();
             } else {
-                m_altitudeNegative += coordinate.altitude();
+                m_altitudeNegative += coordinate.altitude() - m_lastPosition.altitude();
             }
         }
 
