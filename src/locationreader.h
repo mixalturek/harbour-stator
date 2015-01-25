@@ -76,7 +76,7 @@ signals:
     /**
      * @brief Refresh GUI, parameter values update.
      */
-    void refreshGui();
+    void refreshGui() const;
 
 public slots:
     /**
@@ -93,6 +93,7 @@ private slots:
 private:
     void dumpPositionInfo(const QGeoPositionInfo &info) const;
     void dumpState() const;
+    void optionallyRefreshGui() const;
     qint64 rawDuration() const;
     QString formatDuration(qint64 millis) const;
     QString formatDistance(qreal meters) const;

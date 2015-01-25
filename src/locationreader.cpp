@@ -158,10 +158,7 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
             }
         }
 
-        if(m_refreshGuiNotifications) {
-            qDebug() << "Refresh GUI";
-            emit refreshGui();
-        }
+        optionallyRefreshGui();
 
 #ifdef QT_DEBUG
         dumpState();
@@ -214,6 +211,14 @@ bool LocationReader::refreshGuiNotifications() const
 void LocationReader::setRefreshGuiNotifications(bool refreshGuiNotifications)
 {
     m_refreshGuiNotifications = refreshGuiNotifications;
+    optionallyRefreshGui();
+}
+
+void LocationReader::optionallyRefreshGui() const {
+    if(m_refreshGuiNotifications) {
+        qDebug() << "Refreshing GUI";
+        emit refreshGui();
+    }
 }
 
 qint64 LocationReader::rawDuration() const {
