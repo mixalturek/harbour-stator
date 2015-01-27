@@ -85,21 +85,21 @@ Page {
             KeyValue {
                 id: distance
                 key: qsTr("Distance")
-                value: "0.0"
+                value: "0.00"
                 unit: qsTr("km")
             }
 
             KeyValue {
                 id: currentSpeed
                 key: qsTr("Current Speed")
-                value: "0.0"
+                value: "0.00"
                 unit: qsTr("km/h")
             }
 
             KeyValue {
                 id: averageSpeed
                 key: qsTr("Average Speed")
-                value: "0.0"
+                value: "0.00"
                 unit: qsTr("km/h")
             }
         }

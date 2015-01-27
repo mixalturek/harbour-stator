@@ -102,11 +102,11 @@ void LocationReader::enableUpdates(bool enable)
         m_numEvents = 0;
         m_positionSource->startUpdates();
         m_positionSource->setUpdateInterval(0);
-        m_startTime = QDateTime::currentDateTime().currentMSecsSinceEpoch();
+        m_startTime = currentTime();
     } else {
         qDebug() << "Disabling location updates";
         m_positionSource->stopUpdates();
-        m_partialDuration += QDateTime::currentDateTime().currentMSecsSinceEpoch() - m_startTime;
+        m_partialDuration += currentTime() - m_startTime;
         m_startTime = -1;
     }
 }
@@ -258,9 +258,13 @@ QString LocationReader::formatDuration(qint64 millis) const {
 }
 
 QString LocationReader::formatDistance(qreal meters) const {
-    return QString::number(meters / 1000.0, 'f', 1);
+    return QString::number(meters / 1000.0, 'f', 2);
 }
 
 QString LocationReader::formatSpeed(qreal metersPerSecond) const {
-    return QString::number(metersPerSecond * 3.6, 'f', 1);
+    return QString::number(metersPerSecond * 3.6, 'f', 2);
+}
+
+qint64 LocationReader::currentTime() {
+    return QDateTime::currentDateTime().currentMSecsSinceEpoch();
 }
