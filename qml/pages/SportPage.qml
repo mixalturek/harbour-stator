@@ -36,6 +36,11 @@ Page {
         locationReader.refreshGuiNotifications = !paused && pageActive
     }
 
+    onPausedChanged: {
+        durationTimer.running = !paused && pageActive
+        locationReader.refreshGuiNotifications = !paused && pageActive
+    }
+
     SilicaFlickable {
         id: flickable
         anchors.fill: parent

@@ -35,11 +35,16 @@ const int MAX_TIME_DIFFERENCE = 5 * 60 * 1000;
  */
 const int EVENTS_POSITION_VALID = 4;
 
+/**
+ * @brief Artificial value of invalid timestamp.
+ */
+const int INVALID_TIMESTAMP = -1;
+
 LocationReader::LocationReader(QObject *parent) :
     QObject(parent),
     m_positionSource(QGeoPositionInfoSource::createDefaultSource(this)),
     m_numEvents(0),
-    m_startTime(-1),
+    m_startTime(INVALID_TIMESTAMP),
     m_partialDuration(0),
     m_distance(0),
     m_currentSpeed(0),
@@ -102,12 +107,14 @@ void LocationReader::enableUpdates(bool enable)
         m_numEvents = 0;
         m_positionSource->startUpdates();
         m_positionSource->setUpdateInterval(0);
-        m_startTime = currentTime();
     } else {
         qDebug() << "Disabling location updates";
         m_positionSource->stopUpdates();
-        m_partialDuration += currentTime() - m_startTime;
-        m_startTime = -1;
+
+        if(m_startTime != INVALID_TIMESTAMP) {
+            m_partialDuration += currentTime() - m_startTime;
+            m_startTime = INVALID_TIMESTAMP;
+        }
     }
 }
 
@@ -130,21 +137,23 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     dumpPositionInfo(info);
 #endif // QT_DEBUG
 
-    qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    qint64 now = currentTime();
 
     if(now - MAX_TIME_DIFFERENCE > info.timestamp().toMSecsSinceEpoch()) {
         qDebug() << "Position is too old, ignoring event:" << info.timestamp();
         return;
     }
 
+    ++m_numEvents;
     QGeoCoordinate coordinate = info.coordinate();
 
     if(m_numEvents == EVENTS_POSITION_VALID) {
         qDebug() << "Position is considered valid, setting long term update interval:" << m_updateInterval;
         m_positionSource->setUpdateInterval(m_updateInterval);
+        m_startTime = now;
     }
 
-    if(m_numEvents >= EVENTS_POSITION_VALID) {
+    if(m_numEvents > EVENTS_POSITION_VALID) {
         qreal distanceIncrement = m_lastPosition.distanceTo(coordinate);
         m_distance += distanceIncrement;
         m_currentSpeed = distanceIncrement / (now - m_lastTimestamp);
@@ -156,7 +165,6 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 #endif // QT_DEBUG
     }
 
-    ++m_numEvents;
     m_lastPosition = coordinate;
     m_lastTimestamp = now;
 }
@@ -201,6 +209,7 @@ bool LocationReader::refreshGuiNotifications() const
 
 void LocationReader::setRefreshGuiNotifications(bool refreshGuiNotifications)
 {
+    qDebug() << "Setting refresh GUI flag:" << refreshGuiNotifications;
     m_refreshGuiNotifications = refreshGuiNotifications;
     optionallyRefreshGui();
 }
@@ -213,8 +222,8 @@ void LocationReader::optionallyRefreshGui() const {
 }
 
 qint64 LocationReader::rawDuration() const {
-    if(m_startTime != -1) {
-        return m_partialDuration + QDateTime::currentDateTime().toMSecsSinceEpoch() - m_startTime;
+    if(m_startTime != INVALID_TIMESTAMP) {
+        return m_partialDuration + currentTime() - m_startTime;
     } else {
         return m_partialDuration;
     }
@@ -265,6 +274,6 @@ QString LocationReader::formatSpeed(qreal metersPerSecond) const {
     return QString::number(metersPerSecond * 3.6, 'f', 2);
 }
 
-qint64 LocationReader::currentTime() {
+qint64 LocationReader::currentTime() const {
     return QDateTime::currentDateTime().currentMSecsSinceEpoch();
 }

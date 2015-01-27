@@ -97,7 +97,7 @@ private:
     QString formatDuration(qint64 millis) const;
     QString formatDistance(qreal meters) const;
     QString formatSpeed(qreal metersPerSecond) const;
-    qint64 currentTime();
+    qint64 currentTime() const;
 
 private:
     /**
