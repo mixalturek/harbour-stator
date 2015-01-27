@@ -128,14 +128,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Altitude</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>m</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Current Speed</source>
         <translation type="unfinished"></translation>
     </message>

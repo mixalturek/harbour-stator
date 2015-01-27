@@ -90,13 +90,6 @@ Page {
             }
 
             KeyValue {
-                id: altitude
-                key: qsTr("Altitude")
-                value: "↑ 0.0, ↓ 0.0"
-                unit: qsTr("m")
-            }
-
-            KeyValue {
                 id: currentSpeed
                 key: qsTr("Current Speed")
                 value: "0.0"
@@ -118,7 +111,6 @@ Page {
         id: locationReader
         onRefreshGui: {
             distance.value = locationReader.distance
-            altitude.value = locationReader.altitude
             currentSpeed.value = locationReader.currentSpeed
             averageSpeed.value = locationReader.averageSpeed
         }

@@ -45,8 +45,6 @@ LocationReader::LocationReader(QObject *parent) :
     m_currentSpeed(0),
     m_lastPosition(),
     m_refreshGuiNotifications(true),
-    m_altitudePositive(0),
-    m_altitudeNegative(0),
     m_updateInterval(0)
 {
     if(m_positionSource != NULL) {
@@ -150,15 +148,6 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
         m_currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
             ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
 
-        if(coordinate.type() == QGeoCoordinate::Coordinate3D
-                && m_lastPosition.type() == QGeoCoordinate::Coordinate3D) {
-            if(coordinate.altitude() - m_lastPosition.altitude() > 0) {
-                m_altitudePositive += coordinate.altitude() - m_lastPosition.altitude();
-            } else {
-                m_altitudeNegative += coordinate.altitude() - m_lastPosition.altitude();
-            }
-        }
-
         optionallyRefreshGui();
 
 #ifdef QT_DEBUG
@@ -199,7 +188,6 @@ void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) const {
 void LocationReader::dumpState() const {
     qDebug() << "Duration:" << duration();
     qDebug() << "Distance:" << distance();
-    qDebug() << "Altitude:" << altitude();
     qDebug() << "Current speed:" << currentSpeed();
     qDebug() << "Average speed:" << averageSpeed();
 }
@@ -254,11 +242,6 @@ QString LocationReader::averageSpeed() const
     } else {
         return formatSpeed(0);
     }
-}
-
-QString LocationReader::altitude() const {
-    QString result;
-    return result.sprintf("↑ %0.1f, ↓ %0.1f", m_altitudePositive, m_altitudeNegative);
 }
 
 QString LocationReader::formatDuration(qint64 millis) const {
