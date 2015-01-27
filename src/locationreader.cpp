@@ -45,7 +45,8 @@ LocationReader::LocationReader(QObject *parent) :
     m_currentSpeed(0),
     m_lastPosition(),
     m_refreshGuiNotifications(true),
-    m_updateInterval(0)
+    m_updateInterval(0),
+    m_lastTimestamp(0)
 {
     if(m_positionSource != NULL) {
         m_positionSource->setPreferredPositioningMethods(QGeoPositionInfoSource::AllPositioningMethods);
@@ -106,7 +107,7 @@ void LocationReader::enableUpdates(bool enable)
         qDebug() << "Disabling location updates";
         m_positionSource->stopUpdates();
         m_partialDuration += QDateTime::currentDateTime().currentMSecsSinceEpoch() - m_startTime;
-        m_startTime == -1;
+        m_startTime = -1;
     }
 }
 
@@ -144,9 +145,9 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     }
 
     if(m_numEvents >= EVENTS_POSITION_VALID) {
-        m_distance += m_lastPosition.distanceTo(coordinate);
-        m_currentSpeed = info.hasAttribute(QGeoPositionInfo::GroundSpeed)
-            ? info.attribute(QGeoPositionInfo::GroundSpeed) : 0;
+        qreal distanceIncrement = m_lastPosition.distanceTo(coordinate);
+        m_distance += distanceIncrement;
+        m_currentSpeed = distanceIncrement / (now - m_lastTimestamp);
 
         optionallyRefreshGui();
 
@@ -157,6 +158,7 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
 
     ++m_numEvents;
     m_lastPosition = coordinate;
+    m_lastTimestamp = now;
 }
 
 void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) const {

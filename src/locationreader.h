@@ -143,6 +143,11 @@ private:
      * @brief GPS update interval.
      */
     int m_updateInterval;
+
+    /**
+     * @brief Timestamp of last update.
+     */
+    qint64 m_lastTimestamp;
 };
 
 #endif // LOCATIONREADER_H
