@@ -156,7 +156,7 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     if(m_numEvents > EVENTS_POSITION_VALID) {
         qreal distanceIncrement = m_lastPosition.distanceTo(coordinate);
         m_distance += distanceIncrement;
-        m_currentSpeed = distanceIncrement / (now - m_lastTimestamp);
+        m_currentSpeed = distanceIncrement / (now - m_lastTimestamp) * 1000;
 
         optionallyRefreshGui();
 
