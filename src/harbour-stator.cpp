@@ -17,14 +17,13 @@
  * along with Stator.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef QT_QML_DEBUG
 #include <QtQuick>
-#endif
-
 #include <sailfishapp.h>
 #include "locationreader.h"
 
+#ifdef QT_DEBUG
 #define LOG_FILE "/home/nemo/stator.log"
+#endif // QT_DEBUG
 
 #ifdef LOG_FILE
 void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
