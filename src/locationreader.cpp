@@ -150,7 +150,10 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     if(m_numEvents == EVENTS_POSITION_VALID) {
         qDebug() << "Position is considered valid, setting long term update interval:" << m_updateInterval;
         m_positionSource->setUpdateInterval(m_updateInterval);
-        m_startTime = now;
+
+        if(m_startTime == INVALID_TIMESTAMP) {
+            m_startTime = now;
+        }
     }
 
     if(m_numEvents > EVENTS_POSITION_VALID) {
