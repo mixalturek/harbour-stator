@@ -52,6 +52,8 @@ OTHER_FILES += qml/harbour-stator.qml \
     resources/images/sports/riding.svg \
     resources/images/sports/driving.svg \
     resources/images/sports/training.svg \
+    resources/images/sports/standing.svg \
+    resources/images/sports/not.svg \
     resources/images/sports/README.txt \
     resources/images/sports/TEMPLATE.svg \
     .gitignore

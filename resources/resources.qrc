@@ -8,5 +8,7 @@
         <file>images/sports/riding.svg</file>
         <file>images/sports/driving.svg</file>
         <file>images/sports/training.svg</file>
+        <file>images/sports/standing.svg</file>
+        <file>images/sports/not.svg</file>
     </qresource>
 </RCC>

@@ -19,6 +19,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtGraphicalEffects 1.0
 import harbour.stator.LocationReader 1.0
 import "../components"
 
@@ -27,6 +28,8 @@ Page {
     allowedOrientations: Orientation.All
 
     property string sport: ""
+    property string sportImage
+
     property bool paused: true
     property alias updateInterval: locationReader.updateInterval
     property bool pageActive: Qt.application.active && page.status === PageStatus.Active
@@ -107,6 +110,40 @@ Page {
                 value: "0.00"
                 unit: qsTr("km/h")
             }
+        }
+
+        Image {
+            id: statusImage
+            source: sportImage
+            width: Theme.iconSizeLarge
+            height: Theme.iconSizeLarge
+
+            anchors {
+                top: parent.top
+                topMargin: Theme.paddingLarge
+                horizontalCenter: parent.horizontalCenter
+            }
+        }
+
+        ColorOverlay {
+            anchors.fill: statusImage
+            source: statusImage
+            color: Theme.highlightColor
+        }
+
+        Image {
+            id: notImage
+            source: "qrc:/images/sports/not.svg"
+            width: Theme.iconSizeLarge
+            height: Theme.iconSizeLarge
+
+            anchors {
+                top: parent.top
+                topMargin: Theme.paddingLarge
+                horizontalCenter: parent.horizontalCenter
+            }
+
+            visible: paused
         }
 
         VerticalScrollDecorator { flickable: flickable }

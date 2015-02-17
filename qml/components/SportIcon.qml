@@ -30,7 +30,7 @@ BackgroundItem {
     height: image.height + label.height
 
     onClicked: {
-        pageStack.push(Qt.resolvedUrl("../pages/SportPage.qml"), {sport: label.text, updateInterval: updateInterval})
+        pageStack.push(Qt.resolvedUrl("../pages/SportPage.qml"), {sport: label.text, updateInterval: updateInterval, sportImage: image.source})
         pageStack.pushAttached(Qt.resolvedUrl("../pages/ResultsPage.qml"), {sport: label.text})
     }
 
