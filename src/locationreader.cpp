@@ -49,6 +49,7 @@ LocationReader::LocationReader(QObject *parent) :
     m_distance(0),
     m_currentSpeed(0),
     m_lastPosition(),
+    m_lastPositionAccuracy(0),
     m_refreshGuiNotifications(true),
     m_updateInterval(0),
     m_lastTimestamp(0)
@@ -137,6 +138,11 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     dumpPositionInfo(info);
 #endif // QT_DEBUG
 
+    if(info.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)) {
+        qDebug() << "Horizontal accuracy is missing, ignoring event";
+        return;
+    }
+
     qint64 now = currentTime();
 
     if(now - MAX_TIME_DIFFERENCE > info.timestamp().toMSecsSinceEpoch()) {
@@ -156,20 +162,33 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
         }
     }
 
+    qreal accuracy = info.attribute(QGeoPositionInfo::HorizontalAccuracy);
+
     if(m_numEvents > EVENTS_POSITION_VALID) {
         qreal distanceIncrement = m_lastPosition.distanceTo(coordinate);
-        m_distance += distanceIncrement;
-        m_currentSpeed = distanceIncrement / (now - m_lastTimestamp) * 1000;
 
-        optionallyRefreshGui();
+        if(distanceIncrement > m_lastPositionAccuracy + accuracy) {
+            m_distance += distanceIncrement;
+            m_currentSpeed = distanceIncrement / (now - m_lastTimestamp) * 1000;
+
+            optionallyRefreshGui();
+
+            m_lastPosition = coordinate;
+            m_lastPositionAccuracy = accuracy;
+            m_lastTimestamp = now;
 
 #ifdef QT_DEBUG
-        dumpState();
+            dumpState();
 #endif // QT_DEBUG
+        } else {
+            qDebug() << "Distance is lower than accuracy, ignoring event:"
+                     << distanceIncrement << "<" << m_lastPositionAccuracy << "+" << accuracy;
+        }
+    } else {
+        m_lastPosition = coordinate;
+        m_lastPositionAccuracy = accuracy;
+        m_lastTimestamp = now;
     }
-
-    m_lastPosition = coordinate;
-    m_lastTimestamp = now;
 }
 
 void LocationReader::dumpPositionInfo(const QGeoPositionInfo &info) const {

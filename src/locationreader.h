@@ -136,6 +136,11 @@ private:
     QGeoCoordinate m_lastPosition;
 
     /**
+     * @brief Accuracy radius of last possition.
+     */
+    qreal m_lastPositionAccuracy;
+
+    /**
      * @brief Enable flag for GUI refreshing.
      */
     bool m_refreshGuiNotifications;
