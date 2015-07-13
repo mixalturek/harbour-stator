@@ -138,7 +138,7 @@ void LocationReader::positionUpdated(const QGeoPositionInfo &info)
     dumpPositionInfo(info);
 #endif // QT_DEBUG
 
-    if(info.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)) {
+    if(!info.hasAttribute(QGeoPositionInfo::HorizontalAccuracy)) {
         qDebug() << "Horizontal accuracy is missing, ignoring event";
         return;
     }
